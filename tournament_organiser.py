@@ -14,7 +14,7 @@ for n in range(player_count):
 
 print(player_names)
 
-match_count = ( player_count - 1 ) * 2 + 1
+match_count = (player_count - 1) * 2 + 1
 
 print (match_count)
 
@@ -46,6 +46,12 @@ J and K are losers of A and B, L and M incorporate losers of E and F etc.
 # need to create the following
 # winners_dict = {[player_names[0], player_names[-1]], [player_names[0+1], player_names[second last]]} etc.)
 
-winners_dict = {}
-
-winners_start = player_count + ( player_count % 2 )
+winners_bracket_list = []
+initial_matches_count =  round(player_count / 2)
+s = 0
+e = player_count - 1
+for n in range(initial_matches_count):
+    # currently matches 1 vs last and goes inward
+    winners_bracket_list.append([player_names[int(s)], player_names[int(e-s)]])
+    s += 1
+print(winners_bracket_list)
