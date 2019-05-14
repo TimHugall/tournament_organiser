@@ -99,12 +99,13 @@ while match_count > 0:
             match_count = 0
         #change format of winners_match_list here
         elif len(winners_match_list[0]) == 1 and len(winners_match_list) != 1: # possibly superfluous
+            # need to use these to find lists inside the bigger list with a length of 1 and act on them, but it doesn't want to. 
             while winners_match_list.count(len(1)) > 0:
                 print("DEBUG: winners_match_list = " + str(winners_match_list))
                 cut = winners_match_list[winners_match_list.index(len(1))]
                 winners_match_list.remove(winners_match_list[winners_match_list.index(len(1))])
                 winners_match_list[winners_match_list.index(len(1))].append(cut)
-            else:
+        else:
             print("DEBUG: ERROR!")
 
 print("DEBUG")
