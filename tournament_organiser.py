@@ -1,4 +1,4 @@
-# simple tournament organiser (only double elim, single pool at the moment, only 8 players tested)
+# simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm)
 player_count = -1
 while player_count < 1:
     try:
@@ -62,23 +62,33 @@ winners_match_list = initial_match_list
 # for debug
 winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
 
-while match_count > 0:
+while match_count > 0: and len(winners_match_list[0]) > 1: # both conditions so the for loop stops correctly
     losers_match_list = []
+    new_losers_match = []
     for n in winners_match_list:
+        if len(new_losers_match) % 2 == 0 and len(new_losers_match) != 0:
+            losers_match_list.append(new_losers_match)
+            new_losers_match = []
+            print("DEBUG: losers_match_list = " + str(losers_match_list))
         # input loser right now, change to winner later
+        print("DEBUG: n[0] = " + str(n[0]))
+        print("DEBUG: n[1] = " + str(n[1]))
         new_loser = int(input("Please enter _loser_ of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
-        new_losers_match = []
+        print("DEBUG: n[0] = " + str(n[0]))
+        print("DEBUG: n[1] = " + str(n[1]))
         if new_loser == 1:
             new_losers_match.append(n[0])
+            print("DEBUG: new_losers_match = " + str(new_losers_match))
             n.remove(n[0])
         elif new_loser == 2:
             new_losers_match.append(n[1])
+            print("DEBUG: new_losers_match = " + str(new_losers_match))
             n.remove(n[1])
         else:
             print("Invalid entry.")
-            continue
-        if len(new_losers_match) % 2 == 0:
-            losers_match_list.append(new_losers_match)
+            break
         match_count -= 1
+        print("DEBUG: match_count = " + str(match_count))
 # at this point winners match list is still a list of lists with single players in each
-# ERROR: both options progress to the end of the first for loop then fail line 69 on the repeat
+
+print()
