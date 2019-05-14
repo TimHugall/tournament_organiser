@@ -93,6 +93,25 @@ while match_count > 0:
                 break
             match_count -= 1
             print("DEBUG: match_count = " + str(match_count))
-
+        if len(winners_match_list[0]) == 1 and len(winners_match_list) == 1:
+            print(str(winners_match_list[0]) + " reaches GF! Now to face off against the winner of the losers' bracket!")
+            print("DEBUG: Setting match count to zero")
+            match_count = 0
+        #change format of winners_match_list here
+        elif len(winners_match_list[0]) == 1 and len(winners_match_list) != 1: # possibly superfluous
+            while winners_match_list.count(len(1)) > 0:
+                print("DEBUG: winners_match_list = " + str(winners_match_list))
+                cut = winners_match_list[winners_match_list.index(len(1))]
+                winners_match_list.remove(winners_match_list[winners_match_list.index(len(1))])
+                winners_match_list[winners_match_list.index(len(1))].append(cut)
+            else:
+            print("DEBUG: ERROR!")
 
 print("DEBUG")
+"""
+            for n in winners_match_list:
+                print("DEBUG: winners_match_list = " + str(winners_match_list))
+                # this only seems to do it for the first entry
+                winners_match_list[1].append(n[0])
+                winners_match_list.remove(n)
+"""
