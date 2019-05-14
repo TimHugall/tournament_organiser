@@ -59,6 +59,9 @@ print("Initial matches: " + str(initial_match_list))
 
 winners_match_list = initial_match_list
 
+# for debug
+winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
+
 while match_count > 0:
     losers_match_list = []
     for n in winners_match_list:
