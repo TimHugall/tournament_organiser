@@ -62,8 +62,11 @@ winners_match_list = initial_match_list
 # for debug
 winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
 
-while match_count > 0: # some kind of 100% process utilisation freeze on one of these while loops
-    while len(winners_match_list[0]) > 1: # so this section repeats after each round
+while match_count > 0:
+    print("DEBUG: winners_match_list = " + str(winners_match_list))
+    print("DEBUG: winners_match_list[0] = " + str(winners_match_list[0]))
+    while len(winners_match_list[0]) > 1: # gets stuck at the topmost while because this is less than 1 but match count is greater than 0
+    # need to change winners_match_list to be a list of paired players rather than just a list of players
         losers_match_list = []
         new_losers_match = []
         for n in winners_match_list:
@@ -90,6 +93,6 @@ while match_count > 0: # some kind of 100% process utilisation freeze on one of 
                 break
             match_count -= 1
             print("DEBUG: match_count = " + str(match_count))
-# at this point winners match list is still a list of lists with single players in each
+
 
 print("DEBUG")
