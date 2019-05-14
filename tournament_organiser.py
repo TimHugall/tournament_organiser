@@ -69,11 +69,11 @@ while match_count > 0:
         new_loser = int(input("Please enter _loser_ of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
         new_losers_match = []
         if new_loser == 1:
-            n.remove(n[0])
             new_losers_match.append(n[0])
+            n.remove(n[0])
         elif new_loser == 2:
-            n.remove(n[1])
             new_losers_match.append(n[1])
+            n.remove(n[1])
         else:
             print("Invalid entry.")
             continue
@@ -81,5 +81,4 @@ while match_count > 0:
             losers_match_list.append(new_losers_match)
         match_count -= 1
 # at this point winners match list is still a list of lists with single players in each
-# 2 throws error right away at line 76
-# 1 allows you to go through all 4 matches but then throws error at 69
+# ERROR: both options progress to the end of the first for loop then fail line 69 on the repeat
