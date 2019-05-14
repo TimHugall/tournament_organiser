@@ -1,4 +1,4 @@
-# simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm)
+# simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm, losers bracket not functional yet)
 player_count = -1
 while player_count < 1:
     try:
@@ -41,17 +41,12 @@ K       M
 J and K are losers of A and B, L and M incorporate losers of E and F etc.
 """
 
-# if player_count % 2 == 0: to use later
-
-# need to create the following
-# winners_dict = {[player_names[0], player_names[-1]], [player_names[0+1], player_names[second last]]} etc.)
-
 initial_match_list = []
 initial_matches_count = round(player_count / 2)
 s = 0
 e = player_count - 1
 for n in range(initial_matches_count):
-    # currently matches 1 vs last and goes inward
+    # currently matches 1 vs last and goes inward, is this ideal?
     initial_match_list.append([player_names[int(s)], player_names[int(e-s)]])
     s += 1
 
@@ -65,7 +60,7 @@ winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], 
 while match_count > 0:
     print("DEBUG: winners_match_list = " + str(winners_match_list))
     print("DEBUG: winners_match_list[0] = " + str(winners_match_list[0]))
-    while len(winners_match_list[0]) > 1: # gets stuck at the topmost while because this is less than 1 but match count is greater than 0
+    while len(winners_match_list[0]) > 1:
     # need to change winners_match_list to be a list of paired players rather than just a list of players
         losers_match_list = []
         new_losers_match = []
@@ -94,25 +89,19 @@ while match_count > 0:
             match_count -= 1
             print("DEBUG: match_count = " + str(match_count))
         if len(winners_match_list[0]) == 1 and len(winners_match_list) == 1:
-            print(str(winners_match_list[0]) + " reaches GF! Now to face off against the winner of the losers' bracket!")
+            print(str((winners_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the losers' bracket!")
             print("DEBUG: Setting match count to zero")
             match_count = 0
         #change format of winners_match_list here
-        elif len(winners_match_list[0]) == 1 and len(winners_match_list) != 1: # possibly superfluous
-            # need to use these to find lists inside the bigger list with a length of 1 and act on them, but it doesn't want to. 
-            while winners_match_list.count(len(1)) > 0:
+        elif len(winners_match_list[0]) == 1 and len(winners_match_list) != 1:
+            win_while_count = 0 # debug
+            while len(winners_match_list[0]) != 2:
                 print("DEBUG: winners_match_list = " + str(winners_match_list))
-                cut = winners_match_list[winners_match_list.index(len(1))]
-                winners_match_list.remove(winners_match_list[winners_match_list.index(len(1))])
-                winners_match_list[winners_match_list.index(len(1))].append(cut)
+                # inconsistent pruning of winners list (individuals are left as lists until this step, potentially can be improved)
+                winners_match_list.append([(winners_match_list[0])[0], (winners_match_list[1])[0]])
+                winners_match_list.remove(winners_match_list[1])
+                winners_match_list.remove(winners_match_list[0])
         else:
             print("DEBUG: ERROR!")
 
-print("DEBUG")
-"""
-            for n in winners_match_list:
-                print("DEBUG: winners_match_list = " + str(winners_match_list))
-                # this only seems to do it for the first entry
-                winners_match_list[1].append(n[0])
-                winners_match_list.remove(n)
-"""
+print("DEBUG: END")
