@@ -62,7 +62,7 @@ winners_match_list = initial_match_list
 # for debug
 winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
 
-while match_count > 0: # this does not stop. need to ctrl C after 1 round. doesn't progress to running the 1/2 input again
+while match_count > 0: # some kind of 100% process utilisation freeze on one of these while loops
     while len(winners_match_list[0]) > 1: # so this section repeats after each round
         losers_match_list = []
         new_losers_match = []
@@ -91,3 +91,5 @@ while match_count > 0: # this does not stop. need to ctrl C after 1 round. doesn
             match_count -= 1
             print("DEBUG: match_count = " + str(match_count))
 # at this point winners match list is still a list of lists with single players in each
+
+print("DEBUG")
