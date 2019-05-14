@@ -62,16 +62,19 @@ winners_match_list = initial_match_list
 while match_count > 0:
     losers_match_list = []
     for n in winners_match_list:
-        # input loser right now, change to winner later. use n.remove()
-        new_loser = int(input("Please enter _loser_ of " + str(n) + "(1/2): 1: " + n[0] + " or 2: " + n[1]))
+        # input loser right now, change to winner later
+        new_loser = int(input("Please enter _loser_ of " + str(n) + "(1/2): 1: " + str.(n[0]) + " or 2: " + str.(n[1])))
+        new_losers_match = []
         if new_loser == 1:
             n.remove(n[0])
-            losers_match_list.append(n[0])
+            new_losers_match.append(n[0])
         elif new_loser == 2:
             n.remove(n[1])
-            losers_match_list.append(n[1])
+            new_losers_match.append(n[1])
         else:
             print "Invalid entry."
             continue
+        if new_losers_match.count() % 2 == 0:
+            losers_match_list.append(new_losers_match)
         match_count -= 1
-# at this point winners match list is still a list of lists with single players in each. losers is a list of just single players
+# at this point winners match list is still a list of lists with single players in each
