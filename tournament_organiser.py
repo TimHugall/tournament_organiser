@@ -40,7 +40,6 @@ while match_count > 0:
     # need to change winners_match_list to be a list of paired players rather than just a list of players
         new_losers_match = []
         for n in winners_match_list:
-            # used to be an input for loser but changed to winner
             new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
             if new_winner == 2:
                 new_losers_match.append(n[0])
@@ -66,5 +65,34 @@ while match_count > 0:
                 winners_match_list.remove(winners_match_list[0])
         else:
             print("ERROR!")
-
+        # losers match inputs
+    while len(losers_match_list[0]) > 1:
+        for n in losers_match_list:
+            new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
+            if new_winner == 2:
+                print(losers_match_list) # debug
+                n.remove(n[0])
+                print(losers_match_list) # debug
+            elif new_winner == 1:
+                print(losers_match_list) # debug
+                n.remove(n[1])
+                print(losers_match_list) # debug
+            else:
+                print("Invalid entry.")
+                break
+            match_count -= 1
+        if len(losers_match_list[0]) == 1 and len(losers_match_list) == 1:
+            print(str((losers_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the winners' bracket!")
+        # problem is with the below is after the first round of losers, 'todd' and 'elizabeth' shouldn't play each other
+        # one should play 'joe' and one should play 'katarina'
+        # winners of those matches play each other as normal
+        # then the winner plays 'karen' to get into the grand final
+        elif len(losers_match_list[0]) == 1 and len(losers_match_list) != 1:
+            while len(losers_match_list[0]) != 2:
+                # inconsistent pruning of winners list (individuals are left as lists until this step, potentially can be improved)
+                losers_match_list.append([(losers_match_list[0])[0], (losers_match_list[1])[0]])
+                losers_match_list.remove(losers_match_list[1])
+                losers_match_list.remove(losers_match_list[0])
+        else:
+                print("ERROR!")
 print("END")
