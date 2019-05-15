@@ -103,6 +103,7 @@ while len(winners_match_list[0]) > 1: # while the first list of winners_match_li
         # s and e are used as finders for indexes in list
         # currently matches 1 vs last and goes inward, is this ideal?
         # check whether lists are being doubled up here. hopefully it just creates pairings of players, not pairings of lists that contain 1 player
+        # ACTUALLY THIS IS WRONG, 8 SHOULDN'T PLAY 1. 1 SHOULD PLAY 2, 3 V 4, THEN WINNERS OF THESE SHOULD PLAY 5 AND 6
         losers_match_list.append([old_losers_match_list[int(s)], old_losers_match_list[int(e-s)]])
         s += 1
     print("DEBUG: losers_match_list = " + str(losers_match_list))
