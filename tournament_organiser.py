@@ -33,8 +33,8 @@ winners_match_list = initial_match_list
 losers_match_list = []
 
 # for debug, delete later
-winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
-
+# winners_match_list = [["John", "Joe"], ["Todd", "Tess"], ["Karen", "Katarina"], ["Elizabeth", "Edward"]]
+# losers match list ends with half number of entrants -1
 while match_count > 0:
     while len(winners_match_list[0]) > 1:
     # need to change winners_match_list to be a list of paired players rather than just a list of players
@@ -69,7 +69,7 @@ while match_count > 0:
     print("DEBUG: losers_match_list = " + str(losers_match_list))
     while len(losers_match_list[0]) > 1:
         for n in losers_match_list:
-            if len(losers_match_list) % 2 != 0 and len(losers_match_list[-1]) > 1:
+            if len(losers_match_list) == player_count / 2 - 1:
                 print("TRIGGER CUT2") # debug
                 cut2 = (losers_match_list[-1])[-1]
                 cut3 = (losers_match_list[-1])[0]
@@ -89,6 +89,7 @@ while match_count > 0:
                     print("Invalid entry.")
                     break
             else:
+                # error here - 8, 2, 6, 4 - 8 should play 2 and 6 should play 4
                 new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
                 if new_winner == 2:
                     print(losers_match_list) # debug
