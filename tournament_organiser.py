@@ -65,21 +65,42 @@ while match_count > 0:
                 winners_match_list.remove(winners_match_list[0])
         else:
             print("ERROR!")
-        # losers match inputs
+# losers match inputs
+    print("DEBUG: losers_match_list = " + str(losers_match_list))
     while len(losers_match_list[0]) > 1:
         for n in losers_match_list:
-            new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
-            if new_winner == 2:
-                print(losers_match_list) # debug
-                n.remove(n[0])
-                print(losers_match_list) # debug
-            elif new_winner == 1:
-                print(losers_match_list) # debug
-                n.remove(n[1])
-                print(losers_match_list) # debug
+            if len(losers_match_list) % 2 != 0 and len(losers_match_list[-1]) > 1:
+                print("TRIGGER CUT2") # debug
+                cut2 = (losers_match_list[-1])[-1]
+                cut3 = (losers_match_list[-1])[0]
+                losers_match_list.remove(losers_match_list[-1])
+                losers_match_list.append([cut3])
+                losers_match_list.append([cut2])
+                new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[-1]) + " "))
+                if new_winner == 2:
+                    print(losers_match_list) # debug
+                    n.remove(n[0])
+                    print(losers_match_list) # debug
+                elif new_winner == 1:
+                    print(losers_match_list) # debug
+                    n.remove(n[-1])
+                    print(losers_match_list) # debug
+                else:
+                    print("Invalid entry.")
+                    break
             else:
-                print("Invalid entry.")
-                break
+                new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
+                if new_winner == 2:
+                    print(losers_match_list) # debug
+                    n.remove(n[0])
+                    print(losers_match_list) # debug
+                elif new_winner == 1:
+                    print(losers_match_list) # debug
+                    n.remove(n[1])
+                    print(losers_match_list) # debug
+                else:
+                    print("Invalid entry.")
+                    break
             match_count -= 1
         if len(losers_match_list[0]) == 1 and len(losers_match_list) == 1:
             print(str((losers_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the winners' bracket!")
@@ -87,6 +108,7 @@ while match_count > 0:
         # one should play 'joe' and one should play 'katarina'
         # winners of those matches play each other as normal
         # then the winner plays 'karen' to get into the grand final
+        # preparing for 8 players with the below
         elif len(losers_match_list[0]) == 1 and len(losers_match_list) != 1:
             while len(losers_match_list[0]) != 2:
                 # inconsistent pruning of winners list (individuals are left as lists until this step, potentially can be improved)
