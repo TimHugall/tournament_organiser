@@ -41,7 +41,6 @@ while len(winners_match_list) != player_count / 2: # need to fix this for odd nu
     for n in next_match_list:
         # for each pairing in winners_match_list, the for loop asks for the victor
         new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
-        # removes loser from winners_match_list into new_losers_match (temporary pairing storage)
         if new_winner == 2:
             losers_match_list.append(n[0])
             winners_match_list.append(n[1])
@@ -59,6 +58,7 @@ print("Initial round losers:  " + str(losers_match_list))
 
 next_match_list = []
 
+# losers play each other
 s = 0
 e = len(losers_match_list) / 2
 
@@ -77,6 +77,27 @@ while s != e:
 
 print("DEBUG: losers_match_list = " + str(losers_match_list))
 
+# winners play each other
+s = 0
+e = len(winners_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please enter winner of 1) " + str(winners_match_list[0]) + " vs 2) " + str(winners_match_list[1]) + "(1/2): "))
+    if new_winner == 2:
+        winners_match_list.append(winners_match_list[1])
+        losers_match_list.append(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+    elif new_winner == 1:
+        winners_match_list.append(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+        losers_match_list.append(winners_match_list[1])
+        winners_match_list.remove(winners_match_list[0])
+    match_count -= 1
+    s += 1
+
+print("DEBUG: winners_match_list = " + str(winners_match_list))
+print("DEBUG: losers_match_list = " + str(losers_match_list))
 print("DEBUG: Overhaul done up to here.")
 """
 # losers' match inputs
