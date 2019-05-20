@@ -40,7 +40,7 @@ losers_match_list = []
 while len(winners_match_list) != player_count / 2: # need to fix this for odd number of players
     for n in next_match_list:
         # for each pairing in winners_match_list, the for loop asks for the victor
-        new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
+        new_winner = int(input("Please use 1) or 2) to select winner of " + str(n[0]) + " vs " + str(n[1]) + ": "))
         if new_winner == 2:
             losers_match_list.append(n[0])
             winners_match_list.append(n[1])
@@ -63,7 +63,7 @@ s = 0
 e = len(losers_match_list) / 2
 
 while s != e:
-    new_winner = int(input("Please enter winner of 1) " + str(losers_match_list[0]) + " vs 2) " + str(losers_match_list[1]) + "(1/2): "))
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
     if new_winner == 2:
         losers_match_list.append(losers_match_list[1])
         losers_match_list.remove(losers_match_list[0])
@@ -82,22 +82,58 @@ s = 0
 e = len(winners_match_list) / 2
 
 while s != e:
-    new_winner = int(input("Please enter winner of 1) " + str(winners_match_list[0]) + " vs 2) " + str(winners_match_list[1]) + "(1/2): "))
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(winners_match_list[0]) + " vs " + str(winners_match_list[1]) + ": "))
     if new_winner == 2:
-        winners_match_list.append(winners_match_list[1])
         losers_match_list.append(winners_match_list[0])
+        winners_match_list.append(winners_match_list[1])
         winners_match_list.remove(winners_match_list[0])
         winners_match_list.remove(winners_match_list[1])
     elif new_winner == 1:
+        losers_match_list.append(winners_match_list[1])
         winners_match_list.append(winners_match_list[0])
         winners_match_list.remove(winners_match_list[1])
-        losers_match_list.append(winners_match_list[1])
         winners_match_list.remove(winners_match_list[0])
     match_count -= 1
     s += 1
 
 print("DEBUG: winners_match_list = " + str(winners_match_list))
 print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+# losers again (this stuff really should all be one big loop)
+# the below is not ideal
+temp_losers_match_list = losers_match_list
+losers_match_list = []
+s = 0
+e = len(temp_losers_match_list) / 2
+while s != e:
+    losers_match_list.append(temp_losers_match_list[s])
+    losers_match_list.append(temp_losers_match_list[s+2])
+    s += 1
+
+print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+s = 0
+e = len(losers_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
+    if new_winner == 2:
+        losers_match_list.append(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+    elif new_winner == 1:
+        losers_match_list.append(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+    match_count -= 1
+    s += 1
+
+print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+# winners again
+
+
+
 print("DEBUG: Overhaul done up to here.")
 """
 # losers' match inputs
