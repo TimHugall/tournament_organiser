@@ -152,6 +152,79 @@ while s != e:
 print("DEBUG: winners_match_list = " + str(winners_match_list))
 print("DEBUG: losers_match_list = " + str(losers_match_list))
 
+if len(losers_match_list) % 2 != 0:
+    losers_waiting = []
+    losers_waiting.append(losers_match_list[-1])
+    losers_match_list.remove(losers_match_list[-1])
+
+# last 2 losers play
+s = 0
+e = len(losers_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
+    if new_winner == 2:
+        losers_match_list.append(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+    elif new_winner == 1:
+        losers_match_list.append(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+    match_count -= 1
+    s += 1
+print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+if len(losers_match_list) == len(losers_waiting):
+    losers_match_list.append(losers_waiting[-1])
+    losers_waiting.remove(losers_waiting[-1])
+
+# losers final
+s = 0
+e = len(losers_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
+    if new_winner == 2:
+        losers_match_list.append(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+    elif new_winner == 1:
+        losers_match_list.append(losers_match_list[0])
+        losers_match_list.remove(losers_match_list[1])
+        losers_match_list.remove(losers_match_list[0])
+    match_count -= 1
+    s += 1
+print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+if len(losers_match_list) == 1 and len(losers_waiting) == 0:
+    winners_match_list.append(losers_match_list[0])
+
+# grand final
+s = 0
+e = len(winners_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(winners_match_list[0]) + " vs " + str(winners_match_list[1]) + ": "))
+    if new_winner == 2:
+        losers_match_list.append(winners_match_list[0])
+        winners_match_list.append(winners_match_list[1])
+        winners_match_list.remove(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+    elif new_winner == 1:
+        losers_match_list.append(winners_match_list[1])
+        winners_match_list.append(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+        winners_match_list.remove(winners_match_list[0])
+    match_count -= 1
+    s += 1
+
+print("DEBUG: winners_match_list = " + str(winners_match_list))
+print("DEBUG: losers_match_list = " + str(losers_match_list))
+
+# if match_count == 0:
+if len(winners_match_list) == 1:
+    print("The winner is " + str(winners_match_list[0]) +"!")
 
 
 print("DEBUG: Overhaul done up to here.")
