@@ -36,7 +36,7 @@ print("Initial matches: " + str(next_match_list))
 winners_match_list = []
 losers_match_list = []
 
-# winners' matches inputs
+# initial matches inputs
 while len(winners_match_list) != player_count / 2: # need to fix this for odd number of players
     for n in next_match_list:
         # for each pairing in winners_match_list, the for loop asks for the victor
@@ -131,6 +131,26 @@ while s != e:
 print("DEBUG: losers_match_list = " + str(losers_match_list))
 
 # winners again
+s = 0
+e = len(winners_match_list) / 2
+
+while s != e:
+    new_winner = int(input("Please use 1) or 2) to select winner of " + str(winners_match_list[0]) + " vs " + str(winners_match_list[1]) + ": "))
+    if new_winner == 2:
+        losers_match_list.append(winners_match_list[0])
+        winners_match_list.append(winners_match_list[1])
+        winners_match_list.remove(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+    elif new_winner == 1:
+        losers_match_list.append(winners_match_list[1])
+        winners_match_list.append(winners_match_list[0])
+        winners_match_list.remove(winners_match_list[1])
+        winners_match_list.remove(winners_match_list[0])
+    match_count -= 1
+    s += 1
+
+print("DEBUG: winners_match_list = " + str(winners_match_list))
+print("DEBUG: losers_match_list = " + str(losers_match_list))
 
 
 
