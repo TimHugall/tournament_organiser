@@ -22,7 +22,6 @@ match_count = (player_count - 1) * 2 + 1
 initial_match_list = []
 initial_matches_count = round(player_count / 2)
 # iterates through players without for loop
-# s and e are used as finders for indexes in list
 s = 0
 e = player_count - 1
 for n in range(initial_matches_count):
@@ -58,18 +57,14 @@ while len(winners_match_list[0]) > 1: # while the first list of winners_match_li
         if len(new_losers_match) % 2 == 0 and len(new_losers_match) != 0:
             losers_match_list.append(new_losers_match)
             new_losers_match = []
-        # subtract from match count
         match_count -= 1
     # after iterating through winners matches, sees if 1 person left and puts them into grand final
     if len(winners_match_list[0]) == 1 and len(winners_match_list) == 1:
         print(str((winners_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the losers' bracket!")
     # otherwise cleans up winners match list below. invidivuals are left as lists until below, not ideal
     elif len(winners_match_list[0]) == 1 and len(winners_match_list) != 1:
-        # while the first entry isn't a pairing
         while len(winners_match_list[0]) != 2:
-            # take the first two players and put them at the end as a pair
             winners_match_list.append([(winners_match_list[0])[0], (winners_match_list[1])[0]])
-            # remove their individual entries from the start
             winners_match_list.remove(winners_match_list[1])
             winners_match_list.remove(winners_match_list[0])
     # not tested
@@ -78,66 +73,63 @@ while len(winners_match_list[0]) > 1: # while the first list of winners_match_li
 
 # losers' match inputs
     print("DEBUG: losers_match_list = " + str(losers_match_list))
-
-    # after winners' matches are played, losers_match_list is initially half the player count minus 1
-    # this separates the players at the end as they shouldn't be paired against one another
-    if len(losers_match_list) == player_count / 2 - 1:
-        # cut last player from last (incorrect) pairing
-        cut2 = (losers_match_list[-1])[-1]
-        # as above but first player
-        cut3 = (losers_match_list[-1])[0]
-        # remove erroneous pairing
-        losers_match_list.remove(losers_match_list[-1])
-        # paste players back as separate
-        losers_match_list.append([cut3])
-        losers_match_list.append([cut2])
-
-    # reassign pairings in losers_match_list
-    # iterates through players without for loop
-    old_losers_match_list = losers_match_list
-    losers_match_list = []
-    # (don't really need the extra variable but I didn't want to change the use of losers_match_list below)
-    s = 0
-    e = player_count - 1
-    for n in range(old_losers_match_list):
-        # s and e are used as finders for indexes in list
-        # currently matches 1 vs last and goes inward, is this ideal?
-        # check whether lists are being doubled up here. hopefully it just creates pairings of players, not pairings of lists that contain 1 player
-        # ACTUALLY THIS IS WRONG, 8 SHOULDN'T PLAY 1. 1 SHOULD PLAY 2, 3 V 4, THEN WINNERS OF THESE SHOULD PLAY 5 AND 6
-        losers_match_list.append([old_losers_match_list[int(s)], old_losers_match_list[int(e-s)]])
-        s += 1
-    print("DEBUG: losers_match_list = " + str(losers_match_list))
-
     while len(losers_match_list[0]) > 1: # while losers_match_list's initial list is more than 1 player
         for n in losers_match_list:
-            # for each pairing in losers_match_list, the for loop asks for the victor
-            new_winner = int(input("Please enter the winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
-            # eliminates loser
-            if new_loser == 2:
-                n.remove(n[0])
-            elif new_loser == 1:
-                n.remove(n[1])
-            # haven't tested the else
+            # after winners' matches are played, losers_match_list is initially half the player count minus 1
+            # this separates the players at the end as they shouldn't be paired against one another
+            if len(losers_match_list) == player_count / 2 - 1:
+                # cut last player from last (incorrect) pairing
+                cut2 = (losers_match_list[-1])[-1]
+                # as above but first player
+                cut3 = (losers_match_list[-1])[0]
+                # remove erroneous pairing
+                losers_match_list.remove(losers_match_list[-1])
+                # paste players back as separate
+                losers_match_list.append([cut3])
+                losers_match_list.append([cut2])
+
+
+
+                new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[-1]) + " "))
+                if new_winner == 2:
+                    print(losers_match_list) # debug
+                    n.remove(n[0])
+                    print(losers_match_list) # debug
+                elif new_winner == 1:
+                    print(losers_match_list) # debug
+                    n.remove(n[-1])
+                    print(losers_match_list) # debug
+                else:
+                    print("Invalid entry.")
+                    break
             else:
-                print("Invalid entry.")
-                break
-            # regardless, if victor is declared, subtract from match count
+                # error here - 8, 2, 6, 4 - 8 should play 2 and 6 should play 4
+                new_winner = int(input("Please enter winner of " + str(n) + " (1/2): 1) " + str(n[0]) + " or 2) " + str(n[1]) + " "))
+                if new_winner == 2:
+                    print(losers_match_list) # debug
+                    n.remove(n[0])
+                    print(losers_match_list) # debug
+                elif new_winner == 1:
+                    print(losers_match_list) # debug
+                    n.remove(n[1])
+                    print(losers_match_list) # debug
+                else:
+                    print("Invalid entry.")
+                    break
             match_count -= 1
-
-    # after iterating through losers' matches, sees if 1 person left and puts them into grand final
-    if len(losers_match_list[0]) == 1 and len(losers_match_list) == 1:
-        print(str((losers_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the losers' bracket!")
-    # otherwise cleans up losers' match list below. invidivuals are left as lists until below, not ideal
-    elif len(losers_match_list[0]) == 1 and len(losers_match_list) != 1:
-        # while the first entry isn't a pairing
-        while len(losers_match_list[0]) != 2:
-            # take the first two players and put them at the end as a pair
-            losers_match_list.append([(losers_match_list[0])[0], (losers_match_list[1])[0]])
-            # remove their individual entries from the start
-            losers_match_list.remove(losers_match_list[1])
-            losers_match_list.remove(losers_match_list[0])
-    # not tested
-    else:
-        print("ERROR!")
-
-print("DEBUG: END")
+        if len(losers_match_list[0]) == 1 and len(losers_match_list) == 1:
+            print(str((losers_match_list[0])[0]) + " reaches GF! Now to face off against the winner of the winners' bracket!")
+        # problem is with the below is after the first round of losers, 'todd' and 'elizabeth' shouldn't play each other
+        # one should play 'joe' and one should play 'katarina'
+        # winners of those matches play each other as normal
+        # then the winner plays 'karen' to get into the grand final
+        # preparing for 8 players with the below
+        elif len(losers_match_list[0]) == 1 and len(losers_match_list) != 1:
+            while len(losers_match_list[0]) != 2:
+                # inconsistent pruning of winners list (individuals are left as lists until this step, potentially can be improved)
+                losers_match_list.append([(losers_match_list[0])[0], (losers_match_list[1])[0]])
+                losers_match_list.remove(losers_match_list[1])
+                losers_match_list.remove(losers_match_list[0])
+        else:
+                print("ERROR!")
+print("END")
