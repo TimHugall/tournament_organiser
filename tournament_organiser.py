@@ -1,23 +1,23 @@
 # simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm)
 # for debugging
-player_count = 8
-"""
+# player_count = 8
+
 player_count = -1
 while player_count < 1:
     try:
         player_count = int(input("How many players will be participating in the tournament? "))
     except ValueError:
         continue
-"""
+
 # for debugging
-init_match_list = [1, 2, 3, 4, 5, 6, 7, 8]
-"""
+# init_match_list = [1, 2, 3, 4, 5, 6, 7, 8]
+
 init_match_list = []
 
 # currently seed position is stored in order in the list, no key-value pair
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
-"""
+
 # needs better formatting
 print("Players: " + str(init_match_list))
 
@@ -55,57 +55,67 @@ print("Losers: " + str(losers_match_list))
 
 # winners and losers repeating matches
 while rem_match_count > 1:
-    # winners until GF
-    while len(winners_match_list) > len(losers_match_list) or len(winners_match_list) % 2 != 0: # need to fix these so repeats happen properly
-        print("Winners' round")
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[0]) + " vs " + str(winners_match_list[1]) + ": "))
-        if new_winner == 1:
-            # add loser to losers
-            losers_match_list.insert(1, winners_match_list[1]) # needs correction after fixing losers arrangement
-            # remove loser from winners
-            winners_match_list.remove(winners_match_list[1])
-            # append winner to end of winners to rebuild list
-            winners_match_list.append(winners_match_list[0])
-            # remove winner from beginning of winners so cycles correctly
-            winners_match_list.remove(winners_match_list[0])
-            # this order is necessary - 1 must be removed before 0
-        elif new_winner == 2:
-            # append winner to end of winners to rebuild list
-            winners_match_list.append(winners_match_list[1])
-            # remove winner from beginning of winners so cycles correctly
-            winners_match_list.remove(winners_match_list[1])
-            # add loser to losers
-            losers_match_list.insert(1, winners_match_list[0]) # needs correction after fixing losers arrangement
-            # remove loser from winners
-            winners_match_list.remove(winners_match_list[0])
-            # this order is necessary - 1 must be removed before 0
-        rem_match_count -= 1
-
-    print("Winners: " + str(winners_match_list))
-    print("Losers: " + str(losers_match_list))
-
     # losers until GF
-    while len(losers_match_list) >= len(winners_match_list) or len(losers_match_list) % 2 != 0: # need to fix these so repeats happen properly
+    s = 0
+    keep_in_losers = []
+    eliminated = []
+    while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0: # need to fix these so repeats happen properly
         print("Losers' round")
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
+        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[s]) + " vs " + str(losers_match_list[s+1]) + ": "))
         if new_winner == 1:
-            # remove loser from losers (eliminated)
-            losers_match_list.remove(losers_match_list[1])
-            # append winner to end of losers to rebuild list (continues in losers)
-            losers_match_list.append(losers_match_list[0])
-            # remove winner from beginning of losers so cycles correctly
-            losers_match_list.remove(losers_match_list[0])
-            # this order is necessary - 1 must be removed before 0
+            # add loser to eliminated
+            eliminated.append(losers_match_list[s+1])
+            # add winner to keep_in_losers
+            keep_in_losers.append(losers_match_list[s])
         elif new_winner == 2:
-            # append winner to end of losers to rebuild list (continues in losers)
-            losers_match_list.append(losers_match_list[1])
-            # remove winner from beginning of winners so cycles correctly
-            losers_match_list.remove(losers_match_list[1])
-            # remove loser from losers (eliminated)
-            losers_match_list.remove(losers_match_list[0])
-            # this order is necessary - 1 must be removed before 0
+            # add loser to eliminated
+            eliminated.append(losers_match_list[s])
+            # add winner to keep_in_losers
+            keep_in_losers.append(losers_match_list[s+1])
         rem_match_count -= 1
+        # needed otherwise s is too high near end
+        if len(losers_match_list) > 3:
+            s += 2
+        else:
+            break
+
+    losers_match_list = keep_in_losers
 
     print("Winners: " + str(winners_match_list))
     print("Losers: " + str(losers_match_list))
+
+    # winners until GF
+    s = 0
+    move_to_losers = []
+    keep_in_winners = []
+    while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0: # need to fix these so repeats happen properly
+        print("Winners' round")
+        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[s]) + " vs " + str(winners_match_list[s+1]) + ": "))
+        if new_winner == 1:
+            # add loser to move_to_losers
+            move_to_losers.append(winners_match_list[s+1])
+            # add winner to keep_in_winners
+            keep_in_winners.append(winners_match_list[s])
+        elif new_winner == 2:
+            # add loser to move_to_losers
+            move_to_losers.append(winners_match_list[s])
+            # add winner to keep_in_winners
+            keep_in_winners.append(winners_match_list[s+1])
+        rem_match_count -= 1
+        s += 2
+    winners_match_list = keep_in_winners
+
+    # move to losers here
+    if len(move_to_losers) == 1: # so that grand final qualification works properly
+        losers_match_list.append(move_to_losers[0])
+    else:
+        s = 1
+        for n in move_to_losers:
+            losers_match_list.insert(s, n)
+            s += 2
+
+    print("Winners: " + str(winners_match_list))
+    print("Losers: " + str(losers_match_list))
+
+
 print("END")
