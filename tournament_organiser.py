@@ -56,59 +56,55 @@ print("Losers: " + str(losers_match_list))
 # winners and losers repeating matches
 while rem_match_count > 1:
     # winners until GF
-    s = 0
-    while len(winners_match_list) > 1: # need to fix these so repeats happen properly
+    while len(winners_match_list) > len(losers_match_list) or len(winners_match_list) % 2 != 0: # need to fix these so repeats happen properly
         print("Winners' round")
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[s]) + " vs " + str(winners_match_list[s+1]) + ": "))
+        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[0]) + " vs " + str(winners_match_list[1]) + ": "))
         if new_winner == 1:
             # add loser to losers
-            losers_match_list.append(winners_match_list[s+1])
+            losers_match_list.insert(1, winners_match_list[1]) # needs correction after fixing losers arrangement
             # remove loser from winners
-            winners_match_list.remove(winners_match_list[s+1])
+            winners_match_list.remove(winners_match_list[1])
             # append winner to end of winners to rebuild list
-            winners_match_list.append(winners_match_list[s])
+            winners_match_list.append(winners_match_list[0])
             # remove winner from beginning of winners so cycles correctly
-            winners_match_list.remove(winners_match_list[s])
-            # this order is necessary - s+1 must be removed before s, as the removal of s will change which index s+1 is
+            winners_match_list.remove(winners_match_list[0])
+            # this order is necessary - 1 must be removed before 0
         elif new_winner == 2:
             # append winner to end of winners to rebuild list
-            winners_match_list.append(winners_match_list[s+1])
+            winners_match_list.append(winners_match_list[1])
             # remove winner from beginning of winners so cycles correctly
-            winners_match_list.remove(winners_match_list[s+1])
+            winners_match_list.remove(winners_match_list[1])
             # add loser to losers
-            losers_match_list.append(winners_match_list[s])
+            losers_match_list.insert(1, winners_match_list[0]) # needs correction after fixing losers arrangement
             # remove loser from winners
-            winners_match_list.remove(winners_match_list[s])
-            # this order is necessary - s+1 must be removed before s, as the removal of s will change which index s+1 is
+            winners_match_list.remove(winners_match_list[0])
+            # this order is necessary - 1 must be removed before 0
         rem_match_count -= 1
-        s += 1
 
     print("Winners: " + str(winners_match_list))
     print("Losers: " + str(losers_match_list))
 
     # losers until GF
-    s = 0
-    while len(losers_match_list) > 1: # need to fix these so repeats happen properly
+    while len(losers_match_list) >= len(winners_match_list) or len(losers_match_list) % 2 != 0: # need to fix these so repeats happen properly
         print("Losers' round")
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[s]) + " vs " + str(losers_match_list[s+1]) + ": "))
+        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[0]) + " vs " + str(losers_match_list[1]) + ": "))
         if new_winner == 1:
             # remove loser from losers (eliminated)
-            losers_match_list.remove(losers_match_list[s+1])
+            losers_match_list.remove(losers_match_list[1])
             # append winner to end of losers to rebuild list (continues in losers)
-            losers_match_list.append(losers_match_list[s])
+            losers_match_list.append(losers_match_list[0])
             # remove winner from beginning of losers so cycles correctly
-            losers_match_list.remove(losers_match_list[s])
-            # this order is necessary - s+1 must be removed before s, as the removal of s will change which index s+1 is
+            losers_match_list.remove(losers_match_list[0])
+            # this order is necessary - 1 must be removed before 0
         elif new_winner == 2:
             # append winner to end of losers to rebuild list (continues in losers)
-            losers_match_list.append(losers_match_list[s+1])
+            losers_match_list.append(losers_match_list[1])
             # remove winner from beginning of winners so cycles correctly
-            losers_match_list.remove(losers_match_list[s+1])
+            losers_match_list.remove(losers_match_list[1])
             # remove loser from losers (eliminated)
-            losers_match_list.remove(losers_match_list[s])
-            # this order is necessary - s+1 must be removed before s, as the removal of s will change which index s+1 is
+            losers_match_list.remove(losers_match_list[0])
+            # this order is necessary - 1 must be removed before 0
         rem_match_count -= 1
-        s += 1
 
     print("Winners: " + str(winners_match_list))
     print("Losers: " + str(losers_match_list))
