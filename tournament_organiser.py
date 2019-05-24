@@ -121,8 +121,14 @@ while rem_match_count > 2:
     print("Winners: " + str(winners_match_list))
     print("Losers: " + str(losers_match_list))
 
-    print("DEBUG: " + str(rem_match_count))
+# grand final
+print("Grand final")
+new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[0]) + " vs " + str(losers_match_list[0]) + ": "))
+# declare winner
+if new_winner == 1:
+    print(str(winners_match_list[0]) + " is the winner!")
+elif new_winner == 2:
+    print(str(losers_match_list[0]) + " is the winner!")
+rem_match_count -= 1
 
-print("Winners: " + str(winners_match_list))
-print("Losers: " + str(losers_match_list))
 print("END")
