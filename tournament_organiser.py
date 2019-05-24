@@ -35,12 +35,16 @@ if player_count % 2 != 0:
     print("Preliminary round")
     # lowest seeds play each other
     while True:
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(init_match_list[-1]) + " vs " + str(init_match_list[-2]) + ": "))
-        if new_winner != 1 and new_winner != 2:
+        try:
+            new_winner = int(input("Please enter 1 or 2 to select winner of " + str(init_match_list[-1]) + " vs " + str(init_match_list[-2]) + ": "))
+        except ValueError:
             print("Please enter 1 or 2")
-            continue
         else:
-            break
+            if new_winner != 1 and new_winner != 2:
+                print("Please enter 1 or 2")
+                continue
+            else:
+                break
     if new_winner == 1:
         # declare loser
         uneven_loser = init_match_list[-2]
@@ -61,12 +65,16 @@ s = 0
 e = len(init_match_list) - 1
 while s != e + 1: # breaks when the while loop reaches the middle of the list
     while True:
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(init_match_list[s]) + " vs " + str(init_match_list[e]) + ": "))
-        if new_winner != 1 and new_winner != 2:
+        try:
+            new_winner = int(input("Please enter 1 or 2 to select winner of " + str(init_match_list[s]) + " vs " + str(init_match_list[e]) + ": "))
+        except ValueError:
             print("Please enter 1 or 2")
-            continue
         else:
-            break
+            if new_winner != 1 and new_winner != 2:
+                print("Please enter 1 or 2")
+                continue
+            else:
+                break
     if new_winner == 1:
         # adds winner to winners
         winners_match_list.append(init_match_list[s])
@@ -88,12 +96,16 @@ print("Losers: " + str(losers_match_list))
 if uneven == True:
     print("Additional losers' round")
     while True:
-        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(uneven_loser) + " vs " + str(losers_match_list[-1]) + ": "))
-        if new_winner != 1 and new_winner != 2:
+        try:
+            new_winner = int(input("Please enter 1 or 2 to select winner of " + str(uneven_loser) + " vs " + str(losers_match_list[-1]) + ": "))
+        except ValueError:
             print("Please enter 1 or 2")
-            continue
         else:
-            break
+            if new_winner != 1 and new_winner != 2:
+                print("Please enter 1 or 2")
+                continue
+            else:
+                break
     if new_winner == 1:
         # declare uneven winner
         uneven_winner = uneven_loser
@@ -117,12 +129,16 @@ while rem_match_count > 2:
     while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0:
         print("Losers' round")
         while True:
-            new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[s]) + " vs " + str(losers_match_list[s+1]) + ": "))
-            if new_winner != 1 and new_winner != 2:
+            try:
+                new_winner = int(input("Please enter 1 or 2 to select winner of " + str(losers_match_list[s]) + " vs " + str(losers_match_list[s+1]) + ": "))
+            except ValueError:
                 print("Please enter 1 or 2")
-                continue
             else:
-                break
+                if new_winner != 1 and new_winner != 2:
+                    print("Please enter 1 or 2")
+                    continue
+                else:
+                    break
         if new_winner == 1:
             # add loser to eliminated
             eliminated.append(losers_match_list[s+1])
@@ -159,12 +175,16 @@ while rem_match_count > 2:
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             print("Winners' round")
             while True:
-                new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[s]) + " vs " + str(winners_match_list[s+1]) + ": "))
-                if new_winner != 1 and new_winner != 2:
+                try:
+                    new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[s]) + " vs " + str(winners_match_list[s+1]) + ": "))
+                except ValueError:
                     print("Please enter 1 or 2")
-                    continue
                 else:
-                    break
+                    if new_winner != 1 and new_winner != 2:
+                        print("Please enter 1 or 2")
+                        continue
+                    else:
+                        break
             if new_winner == 1:
                 # add loser to move_to_losers
                 move_to_losers.append(winners_match_list[s+1])
@@ -195,12 +215,16 @@ while rem_match_count > 2:
 # grand final
 print("Grand final")
 while True:
-    new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[0]) + " vs " + str(losers_match_list[0]) + ": "))
-    if new_winner != 1 and new_winner != 2:
+    try:
+        new_winner = int(input("Please enter 1 or 2 to select winner of " + str(winners_match_list[0]) + " vs " + str(losers_match_list[0]) + ": "))
+    except ValueError:
         print("Please enter 1 or 2")
-        continue
     else:
-        break
+        if new_winner != 1 and new_winner != 2:
+            print("Please enter 1 or 2")
+            continue
+        else:
+            break
 # declare winner
 if new_winner == 1:
     print(str(winners_match_list[0]) + " is the winner!")
