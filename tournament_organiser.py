@@ -1,23 +1,23 @@
 # simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm)
 # for debugging
-# player_count = 8
-
+player_count = 16
+"""
 player_count = -1
 while player_count < 1:
     try:
         player_count = int(input("How many players will be participating in the tournament? "))
     except ValueError:
         continue
-
-# for debugging
-# init_match_list = [1, 2, 3, 4, 5, 6, 7, 8]
-
+"""
+# for debugging - now testing 16 players
+init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+"""
 init_match_list = []
 
 # currently seed position is stored in order in the list, no key-value pair
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
-
+"""
 # needs better formatting
 print("Players: " + str(init_match_list))
 
