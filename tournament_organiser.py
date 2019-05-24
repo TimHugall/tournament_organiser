@@ -90,7 +90,10 @@ while rem_match_count > 2:
     # winners until GF
     s = 0
     move_to_losers = []
-    if len(winners_match_list) != 1:
+    # added condition that winners_match_list is greater than losers_match_list
+    # otherwise larger player counts losers get inserted incorrectly into losers_match_list
+    # must be an exception for when both lists have length 2, however
+    if len(winners_match_list) != 1 and (len(winners_match_list) > len(losers_match_list) or len(winners_match_list) == 2):
         keep_in_winners = []
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             print("Winners' round")
@@ -107,6 +110,7 @@ while rem_match_count > 2:
                 keep_in_winners.append(winners_match_list[s+1])
             rem_match_count -= 1
             s += 2
+
         winners_match_list = keep_in_winners
 
         # move to losers here
