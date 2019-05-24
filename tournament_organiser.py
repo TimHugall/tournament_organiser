@@ -1,23 +1,24 @@
 # simple tournament organiser (only double elim, single pool at the moment, only 8 players tested atm)
-# for debugging
-player_count = 16
-"""
+
 player_count = -1
 while player_count < 1:
     try:
         player_count = int(input("How many players will be participating in the tournament? "))
     except ValueError:
         continue
-"""
-# for debugging - now testing 16 players
-init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-"""
+
+# for debugging
+# player_count = 16
+
 init_match_list = []
 
 # currently seed position is stored in order in the list, no key-value pair
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
-"""
+
+# for debugging - now testing 16 players
+# init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+
 # needs better formatting
 print("Players: " + str(init_match_list))
 
@@ -29,6 +30,24 @@ losers_match_list = []
 winners_match_list = []
 
 # reserved section for matches in case of uneven number of players
+if player_count % 2 != 0:
+    uneven = True
+    print("Preliminary round")
+    # lowest seeds play each other
+    new_winner = int(input("Please enter 1 or 2 to select winner of " + str(init_match_list[-1]) + " vs " + str(init_match_list[-2]) + ": "))
+    if new_winner == 1:
+        # declare loser
+        uneven_loser = init_match_list[-2]
+        # remove loser from init_match_list
+        init_match_list.remove(init_match_list[-2])
+    elif new_winner == 2:
+        # declare loser
+        uneven_loser = init_match_list[-1]
+        # remove loser from init_match_list
+        init_match_list.remove(init_match_list[-1])
+    rem_match_count -= 1
+else:
+    uneven = False
 
 # init matches - matches 1st seed vs 8th seed etc, not sure if this is the preferred method
 print("Initial round")
@@ -53,6 +72,24 @@ while s != e + 1: # breaks when the while loop reaches the middle of the list
 print("Winners: " + str(winners_match_list))
 print("Losers: " + str(losers_match_list))
 
+# uneven losers match
+if uneven == True:
+    print("Additional losers' round")
+    new_winner = int(input("Please enter 1 or 2 to select winner of " + str(uneven_loser) + " vs " + str(losers_match_list[-1]) + ": "))
+    if new_winner == 1:
+        # declare uneven winner
+        uneven_winner = uneven_loser
+        # remove loser from losers_match_list
+        losers_match_list.remove(losers_match_list[-1])
+        # add uneven_winner to losers_match_list in their place
+        losers_match_list.append(uneven_winner)
+    elif new_winner == 2:
+        # no need to do anything just leave losers_match_list in place
+        uneven_loser = []
+        uneven_winner = []
+    rem_match_count -= 1
+    uneven = False
+    
 # winners and losers repeating matches
 while rem_match_count > 2:
     # losers until GF
