@@ -11,10 +11,6 @@ while player_count < 1:
 
 init_match_list = []
 
-# for stats
-stats = []
-player = {}
-
 # currently seed position is stored in order in the list, no key-value pair
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
@@ -32,11 +28,10 @@ losers_match_list = []
 winners_match_list = []
 
 # function definitions
-selection = 0
 winner = ""
 loser = ""
 def resultQuery (player_one, player_two):
-    global selection, winner, loser, rem_match_count
+    global winner, loser, rem_match_count
     while True:
         try:
             selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
