@@ -22,23 +22,33 @@ for n in range(player_count):
 print("Players: " + str(init_match_list))
 
 # formula for double elim
-init_match_count = (player_count - 1) * 2 + 1
-rem_match_count = init_match_count
+rem_match_count = (player_count - 1) * 2 + 1
 # establish lists for use below
 losers_match_list = []
 winners_match_list = []
 
-# function definition for result_query
-new_winner = 0
+# function definitions
+selection = 0
+winner = ""
+loser = ""
+
 def resultQuery (player_one, player_two):
-    global new_winner
+    global selection, winner, loser
     while True:
         try:
-            new_winner = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
+            selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
+            if selection == 1:
+                winner = player_one
+                loser = player_two
+            elif selection == 2:
+                winner = player_two
+                loser = player_one
+            return winner
+            return loser
         except ValueError:
             print("Invalid input.")
         else:
-            if new_winner != 1 and new_winner != 2:
+            if selection != 1 and selection != 2:
                 print("Invalid input.")
                 continue
             else:
@@ -51,17 +61,11 @@ if player_count % 2 != 0:
     print("Preliminary round")
     # lowest seeds play each other
     resultQuery(init_match_list[-1], init_match_list[-2])
-    if new_winner == 1:
-        # declare loser
-        uneven_loser = init_match_list[-2]
-        # remove loser from init_match_list
-        init_match_list.remove(init_match_list[-2])
-    elif new_winner == 2:
-        # declare loser
-        uneven_loser = init_match_list[-1]
-        # remove loser from init_match_list
-        init_match_list.remove(init_match_list[-1])
     rem_match_count -= 1
+    # declare loser
+    uneven_loser = loser
+    # remove loser from init_match_list
+    init_match_list.remove(loser)
 else:
     uneven = False
 
@@ -72,17 +76,11 @@ s = 0
 e = len(init_match_list) - 1
 while s != e + 1: # breaks when the while loop reaches the middle of the list
     resultQuery(init_match_list[s], init_match_list[e])
-    if new_winner == 1:
-        # adds winner to winners
-        winners_match_list.append(init_match_list[s])
-        # adds loser to losers
-        losers_match_list.append(init_match_list[e])
-    elif new_winner == 2:
-        # adds winner to winners
-        winners_match_list.append(init_match_list[e])
-        # adds loser to losers
-        losers_match_list.append(init_match_list[s])
     rem_match_count -= 1
+    # adds winner to winners
+    winners_match_list.append(winner)
+    # adds loser to losers
+    losers_match_list.append(loser)
     s += 1
     e -= 1
 
@@ -93,23 +91,16 @@ print("Losers' bracket: " + str(losers_match_list))
 if uneven == True:
     print(" ")
     print("Additional losers' round")
-    resultQuery(uneven_loser, losers_match_list[-1])
-    if new_winner == 1:
-        # declare uneven winner
-        uneven_winner = uneven_loser
-        # remove loser from losers_match_list
-        losers_match_list.remove(losers_match_list[-1])
-        # add uneven_winner to losers_match_list in their place
-        losers_match_list.append(uneven_winner)
-    elif new_winner == 2:
-        # no need to do anything just leave losers_match_list in place
-        uneven_loser = []
-        uneven_winner = []
+    losers_match_list.append(uneven_loser)
+    resultQuery(losers_match_list[-1], losers_match_list[-2])
     rem_match_count -= 1
+    # remove loser from losers_match_list, winner stays
+    losers_match_list.remove(loser)
     uneven = False
 
 # winners and losers repeating matches
 while rem_match_count > 2:
+    print(rem_match_count)
     # losers until GF
     print(" ")
     print("Losers' round")
@@ -118,17 +109,11 @@ while rem_match_count > 2:
     eliminated = []
     while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0:
         resultQuery(losers_match_list[s], losers_match_list[s+1])
-        if new_winner == 1:
-            # add loser to eliminated
-            eliminated.append(losers_match_list[s+1])
-            # add winner to keep_in_losers
-            keep_in_losers.append(losers_match_list[s])
-        elif new_winner == 2:
-            # add loser to eliminated
-            eliminated.append(losers_match_list[s])
-            # add winner to keep_in_losers
-            keep_in_losers.append(losers_match_list[s+1])
         rem_match_count -= 1
+        # add loser to eliminated
+        eliminated.append(loser)
+        # add winner to keep_in_losers
+        keep_in_losers.append(winner)
         # needed otherwise s is too high near end
         if len(losers_match_list) > 3:
             s += 2
@@ -154,17 +139,11 @@ while rem_match_count > 2:
         keep_in_winners = []
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             resultQuery(winners_match_list[s], winners_match_list[s+1])
-            if new_winner == 1:
-                # add loser to move_to_losers
-                move_to_losers.append(winners_match_list[s+1])
-                # add winner to keep_in_winners
-                keep_in_winners.append(winners_match_list[s])
-            elif new_winner == 2:
-                # add loser to move_to_losers
-                move_to_losers.append(winners_match_list[s])
-                # add winner to keep_in_winners
-                keep_in_winners.append(winners_match_list[s+1])
             rem_match_count -= 1
+            # add loser to move_to_losers
+            move_to_losers.append(loser)
+            # add winner to keep_in_winners
+            keep_in_winners.append(winner)
             s += 2
 
         winners_match_list = keep_in_winners
@@ -185,10 +164,7 @@ while rem_match_count > 2:
 print(" ")
 print("Grand final")
 resultQuery(winners_match_list[0], losers_match_list[0])
+rem_match_count -= 1
 # declare winner
 print(" ")
-if new_winner == 1:
-    print(str(winners_match_list[0]) + " is the winner!")
-elif new_winner == 2:
-    print(str(losers_match_list[0]) + " is the winner!")
-rem_match_count -= 1
+print(str(winner) + " is the winner!")
