@@ -15,6 +15,16 @@ init_match_list = []
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
 
+# stats
+stats = []
+for player in init_match_list:
+    player_stats = {}
+    player_stats["name"] = player
+    player_stats["seed"] = (int(init_match_list.index(player)) + 1)
+    player_stats["wins"] = 0
+    player_stats["losses"] = 0
+    stats.append(player_stats)
+
 # for debugging - now testing 16 players
 # init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
