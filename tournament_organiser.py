@@ -11,6 +11,10 @@ while player_count < 1:
 
 init_match_list = []
 
+# for stats
+stats = []
+player = {}
+
 # currently seed position is stored in order in the list, no key-value pair
 for n in range(player_count):
     init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
@@ -31,9 +35,8 @@ winners_match_list = []
 selection = 0
 winner = ""
 loser = ""
-
 def resultQuery (player_one, player_two):
-    global selection, winner, loser
+    global selection, winner, loser, rem_match_count
     while True:
         try:
             selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
@@ -43,6 +46,8 @@ def resultQuery (player_one, player_two):
             elif selection == 2:
                 winner = player_two
                 loser = player_one
+            rem_match_count -= 1
+            return rem_match_count
             return winner
             return loser
         except ValueError:
@@ -61,7 +66,6 @@ if player_count % 2 != 0:
     print("Preliminary round")
     # lowest seeds play each other
     resultQuery(init_match_list[-1], init_match_list[-2])
-    rem_match_count -= 1
     # declare loser
     uneven_loser = loser
     # remove loser from init_match_list
@@ -76,7 +80,6 @@ s = 0
 e = len(init_match_list) - 1
 while s != e + 1: # breaks when the while loop reaches the middle of the list
     resultQuery(init_match_list[s], init_match_list[e])
-    rem_match_count -= 1
     # adds winner to winners
     winners_match_list.append(winner)
     # adds loser to losers
@@ -93,14 +96,12 @@ if uneven == True:
     print("Additional losers' round")
     losers_match_list.append(uneven_loser)
     resultQuery(losers_match_list[-1], losers_match_list[-2])
-    rem_match_count -= 1
     # remove loser from losers_match_list, winner stays
     losers_match_list.remove(loser)
     uneven = False
 
 # winners and losers repeating matches
 while rem_match_count > 2:
-    print(rem_match_count)
     # losers until GF
     print(" ")
     print("Losers' round")
@@ -109,7 +110,6 @@ while rem_match_count > 2:
     eliminated = []
     while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0:
         resultQuery(losers_match_list[s], losers_match_list[s+1])
-        rem_match_count -= 1
         # add loser to eliminated
         eliminated.append(loser)
         # add winner to keep_in_losers
@@ -139,7 +139,6 @@ while rem_match_count > 2:
         keep_in_winners = []
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             resultQuery(winners_match_list[s], winners_match_list[s+1])
-            rem_match_count -= 1
             # add loser to move_to_losers
             move_to_losers.append(loser)
             # add winner to keep_in_winners
@@ -164,7 +163,6 @@ while rem_match_count > 2:
 print(" ")
 print("Grand final")
 resultQuery(winners_match_list[0], losers_match_list[0])
-rem_match_count -= 1
 # declare winner
 print(" ")
 print(str(winner) + " is the winner!")
