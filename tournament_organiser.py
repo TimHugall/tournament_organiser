@@ -41,7 +41,7 @@ winners_match_list = []
 winner = ""
 loser = ""
 def resultQuery (player_one, player_two):
-    global winner, loser, rem_match_count
+    global winner, loser, rem_match_count, stats
     while True:
         try:
             selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
@@ -51,10 +51,13 @@ def resultQuery (player_one, player_two):
             elif selection == 2:
                 winner = player_two
                 loser = player_one
+            # needs section here to modify player stats
+            # next(item for item in stats if item["name"] == winner) or something like this
             rem_match_count -= 1
             return rem_match_count
             return winner
             return loser
+            return stats
         except ValueError:
             print("Invalid input.")
         else:
