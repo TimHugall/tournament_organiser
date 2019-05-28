@@ -6,6 +6,8 @@ while player_count < 1:
     except ValueError:
         continue
 
+standing = player_count
+
 # for debugging
 # player_count = 16
 
@@ -23,6 +25,7 @@ for player in init_match_list:
     player_stats["seed"] = (int(init_match_list.index(player)) + 1)
     player_stats["wins"] = 0
     player_stats["losses"] = 0
+    player_stats["final standing"] = 0
     stats.append(player_stats)
 
 # for debugging - now testing 16 players
@@ -41,7 +44,7 @@ winners_match_list = []
 winner = ""
 loser = ""
 def resultQuery (player_one, player_two):
-    global winner, loser, rem_match_count, stats
+    global winner, loser, rem_match_count, stats, standing
     while True:
         try:
             selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
@@ -52,10 +55,27 @@ def resultQuery (player_one, player_two):
                 winner = player_two
                 loser = player_one
             # modify player stats
-            dict_entry = next(item for item in stats if item["name"] == winner)
-            dict_entry['wins'] += 1
-            dict_entry = next(item for item in stats if item["name"] == loser)
-            dict_entry['losses'] += 1
+            # go through list with next, use item, for each item in list 'stats', if item matches criteria, set dict entry to be that item
+            # doesn't need a fallback if player isn't found in list as player should always be found
+            dict_winner = next(item for item in stats if item["name"] == winner)
+            # increase win count
+            dict_winner['wins'] += 1
+            # standing - give 1st place if on the last match and won
+            if standing == 2:
+                dict_winner['final standing'] = 1
+            print(dict_winner)
+            # see above
+            dict_loser = next(item for item in stats if item["name"] == loser)
+            # increase loss count
+            dict_loser['losses'] += 1
+            # set standing based on how close to end (may need tweaking for equal 5th place etc.)
+            # gives 2nd place if lost grand final
+            if standing == 2:
+                dict_loser['final standing'] = 2
+            elif dict_loser['losses'] == 2:
+                dict_loser['final standing'] = standing
+                standing -= 1
+            print(dict_loser)
             rem_match_count -= 1
             return rem_match_count
             return winner
@@ -177,3 +197,8 @@ resultQuery(winners_match_list[0], losers_match_list[0])
 # declare winner
 print(" ")
 print(str(winner) + " is the winner!")
+print(" ")
+print("Standings: ")
+# prints standings at end
+standings_list = sorted(stats, key=lambda k: k['final standing'])
+print(standings_list)
