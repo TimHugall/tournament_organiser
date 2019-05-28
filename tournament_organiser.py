@@ -51,8 +51,11 @@ def resultQuery (player_one, player_two):
             elif selection == 2:
                 winner = player_two
                 loser = player_one
-            # needs section here to modify player stats
-            # next(item for item in stats if item["name"] == winner) or something like this
+            # modify player stats
+            dict_entry = next(item for item in stats if item["name"] == winner)
+            dict_entry['wins'] += 1
+            dict_entry = next(item for item in stats if item["name"] == loser)
+            dict_entry['losses'] += 1
             rem_match_count -= 1
             return rem_match_count
             return winner
