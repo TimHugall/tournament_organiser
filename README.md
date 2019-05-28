@@ -5,5 +5,5 @@ Simple tournament organiser written in Python 3
 * Currently double elimination, single-pool - could do more?
 * Improving functions
 * Better presentation of printed information (diagrams, dataframes?)
-* Dictionary for stats?
+* Better stats functionality - match records? Scores?
 * Instructions above?
