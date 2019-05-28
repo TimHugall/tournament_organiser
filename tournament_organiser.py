@@ -201,4 +201,4 @@ print(" ")
 print("Standings: ")
 # prints standings at end
 standings_list = sorted(stats, key=lambda k: k['final standing'])
-print(standings_list)
+print(standings)
