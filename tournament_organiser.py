@@ -1,4 +1,9 @@
 # simple tournament organiser
+# module imports
+import numpy as np
+import pandas as pd
+
+# player count
 player_count = -1
 while player_count < 1:
     try:
