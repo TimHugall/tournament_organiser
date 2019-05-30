@@ -68,7 +68,6 @@ def resultQuery (player_one, player_two):
             # standing - give 1st place if on the last match and won
             if standing == 2:
                 dict_winner['final standing'] = 1
-            print(dict_winner)
             # see above
             dict_loser = next(item for item in stats if item["name"] == loser)
             # increase loss count
@@ -80,14 +79,8 @@ def resultQuery (player_one, player_two):
             elif dict_loser['losses'] == 2:
                 dict_loser['final standing'] = standing
                 standing -= 1
-            print(dict_loser)
             rem_match_count -= 1
-            print("Winners' bracket: " + str(winners_match_list))
-            print("Losers' bracket: " + str(losers_match_list))
-            return rem_match_count
-            return winner
-            return loser
-            return stats
+            return rem_match_count, winner, loser, stats
         except ValueError:
             print("Invalid input.")
         else:
@@ -101,7 +94,7 @@ def resultQuery (player_one, player_two):
 if player_count % 2 != 0:
     uneven = True
     print(" ")
-    print("Preliminary round")
+    print("Preliminary round (due to uneven players)")
     # lowest seeds play each other
     resultQuery(init_match_list[-1], init_match_list[-2])
     # declare loser
@@ -135,6 +128,10 @@ if uneven == True:
     losers_match_list.remove(loser)
     uneven = False
 
+print(" ")
+print("Winners' bracket: " + str(winners_match_list))
+print("Losers' bracket: " + str(losers_match_list))
+
 # winners and losers repeating matches
 while rem_match_count > 2:
     # losers until GF
@@ -159,6 +156,10 @@ while rem_match_count > 2:
     if len(losers_match_list) == 3:
         keep_in_losers.append(losers_match_list[-1])
     losers_match_list = keep_in_losers
+
+    print(" ")
+    print("Winners' bracket: " + str(winners_match_list))
+    print("Losers' bracket: " + str(losers_match_list))
 
     # winners until GF
     print(" ")
@@ -188,6 +189,10 @@ while rem_match_count > 2:
             for n in move_to_losers:
                 losers_match_list.insert(s, n)
                 s += 2
+                
+    print(" ")
+    print("Winners' bracket: " + str(winners_match_list))
+    print("Losers' bracket: " + str(losers_match_list))
 
 # grand final
 print(" ")
