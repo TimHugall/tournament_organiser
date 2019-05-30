@@ -26,11 +26,11 @@ for n in range(player_count):
 stats = []
 for player in init_match_list:
     player_stats = {}
+    player_stats["final standing"] = 0
     player_stats["name"] = player
     player_stats["seed"] = (int(init_match_list.index(player)) + 1)
     player_stats["wins"] = 0
     player_stats["losses"] = 0
-    player_stats["final standing"] = 0
     stats.append(player_stats)
 
 # for debugging - now testing 16 players
@@ -82,6 +82,8 @@ def resultQuery (player_one, player_two):
                 standing -= 1
             print(dict_loser)
             rem_match_count -= 1
+            print("Winners' bracket: " + str(winners_match_list))
+            print("Losers' bracket: " + str(losers_match_list))
             return rem_match_count
             return winner
             return loser
@@ -123,9 +125,6 @@ while s != e + 1: # breaks when the while loop reaches the middle of the list
     s += 1
     e -= 1
 
-print("Winners' bracket: " + str(winners_match_list))
-print("Losers' bracket: " + str(losers_match_list))
-
 # uneven losers match
 if uneven == True:
     print(" ")
@@ -161,8 +160,6 @@ while rem_match_count > 2:
         keep_in_losers.append(losers_match_list[-1])
     losers_match_list = keep_in_losers
 
-    print("Losers' bracket: " + str(losers_match_list))
-
     # winners until GF
     print(" ")
     print("Winners' round")
@@ -192,9 +189,6 @@ while rem_match_count > 2:
                 losers_match_list.insert(s, n)
                 s += 2
 
-    print("Winners' bracket: " + str(winners_match_list))
-    print("Losers' bracket: " + str(losers_match_list))
-
 # grand final
 print(" ")
 print("Grand final")
@@ -206,4 +200,5 @@ print(" ")
 print("Standings: ")
 # prints standings at end
 standings_list = sorted(stats, key=lambda k: k['final standing'])
-print(standings)
+standings_df = pd.DataFrame(standings_list)
+print(standings_df)

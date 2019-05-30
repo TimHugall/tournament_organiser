@@ -1,5 +1,5 @@
 # tournament_organiser
-Simple tournament organiser written in Python 3.7
+Simple tournament organiser written in Python 3
 
 # Instructions
 Ensure that Python scientific packages are installed for numpy / pandas
