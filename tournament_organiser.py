@@ -189,7 +189,7 @@ while rem_match_count > 2:
             for n in move_to_losers:
                 losers_match_list.insert(s, n)
                 s += 2
-                
+
     print(" ")
     print("Winners' bracket: " + str(winners_match_list))
     print("Losers' bracket: " + str(losers_match_list))
@@ -206,4 +206,5 @@ print("Standings: ")
 # prints standings at end
 standings_list = sorted(stats, key=lambda k: k['final standing'])
 standings_df = pd.DataFrame(standings_list)
-print(standings_df)
+# print results without index, columns ordered correctly
+print(standings_df[['final standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
