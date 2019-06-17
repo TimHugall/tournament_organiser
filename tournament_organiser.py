@@ -5,9 +5,10 @@ import pandas as pd
 
 # player count
 player_count = -1
-while player_count < 1:
+while player_count < 1 or player_count == 1:
     try:
         player_count = int(input("How many players will be participating in the tournament? "))
+        continue
     except ValueError:
         continue
 
@@ -54,7 +55,9 @@ def resultQuery(player_one, player_two):
     global winner, loser, rem_match_count, stats, standing
     while True:
         try:
-            selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
+            selection = 0
+            while selection != 1 and selection != 2:
+                selection = int(input("Please enter 1 or 2 to select the winner of " + str(player_one) + " vs " + str(player_two) + ": "))
             if selection == 1:
                 winner = player_one
                 loser = player_two
