@@ -26,7 +26,7 @@ for n in range(player_count):
 stats = []
 for player in init_match_list:
     player_stats = {}
-    player_stats["final standing"] = 0
+    player_stats["standing"] = 0
     player_stats["name"] = player
     player_stats["seed"] = (int(init_match_list.index(player)) + 1)
     player_stats["wins"] = 0
@@ -48,7 +48,9 @@ winners_match_list = []
 # function definitions
 winner = ""
 loser = ""
-def resultQuery (player_one, player_two):
+
+
+def resultQuery(player_one, player_two):
     global winner, loser, rem_match_count, stats, standing
     while True:
         try:
@@ -67,7 +69,7 @@ def resultQuery (player_one, player_two):
             dict_winner['wins'] += 1
             # standing - give 1st place if on the last match and won
             if standing == 2:
-                dict_winner['final standing'] = 1
+                dict_winner['standing'] = 1
             # see above
             dict_loser = next(item for item in stats if item["name"] == loser)
             # increase loss count
@@ -75,9 +77,9 @@ def resultQuery (player_one, player_two):
             # set standing based on how close to end (may need tweaking for equal 5th place etc.)
             # gives 2nd place if lost grand final
             if standing == 2:
-                dict_loser['final standing'] = 2
+                dict_loser['standing'] = 2
             elif dict_loser['losses'] == 2:
-                dict_loser['final standing'] = standing
+                dict_loser['standing'] = standing
                 standing -= 1
             rem_match_count -= 1
             return rem_match_count, winner, loser, stats
@@ -89,6 +91,7 @@ def resultQuery (player_one, player_two):
                 continue
             else:
                 break
+
 
 # reserved section for matches in case of uneven number of players
 if player_count % 2 != 0:
@@ -109,7 +112,7 @@ print(" ")
 print("Initial round")
 s = 0
 e = len(init_match_list) - 1
-while s != e + 1: # breaks when the while loop reaches the middle of the list
+while s != e + 1:  # breaks when the while loop reaches the middle of the list
     resultQuery(init_match_list[s], init_match_list[e])
     # adds winner to winners
     winners_match_list.append(winner)
@@ -182,7 +185,7 @@ while rem_match_count > 2:
         winners_match_list = keep_in_winners
 
         # move to losers here
-        if len(move_to_losers) == 1: # ensures that winners' final loser is placed properly
+        if len(move_to_losers) == 1:  # ensures that winners' final loser is placed properly
             losers_match_list.append(move_to_losers[0])
         else:
             s = 1
@@ -202,9 +205,9 @@ resultQuery(winners_match_list[0], losers_match_list[0])
 print(" ")
 print(str(winner) + " is the winner!")
 print(" ")
-print("Standings: ")
+print("Results: ")
 # prints standings at end
-standings_list = sorted(stats, key=lambda k: k['final standing'])
+standings_list = sorted(stats, key=lambda k: k['standing'])
 standings_df = pd.DataFrame(standings_list)
 # print results without index, columns ordered correctly
-print(standings_df[['final standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
+print(standings_df[['standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
