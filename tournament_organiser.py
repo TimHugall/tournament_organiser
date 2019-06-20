@@ -29,14 +29,60 @@ while True:
         break
 
 
+def search(name, list_of_dicts):
+    miss = 1
+    for p in list_of_dicts:
+        if p['name'] == name:
+            return p
+        else:
+            miss += 1
+            if miss == len(list_of_dicts):
+                return None
+            else:
+                continue
+
+
 # currently seed position is stored in order in the list, no key-value pair
 if import_seeds == "n":
     for n in range(player_count):
         init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
 else:
     with open('standings.json', 'r') as imported_standings:
-        print(imported_standings)
+        imported_standings = json.load(imported_standings)
+    # print(imported_standings)
+    relevant_imported_standings = []
+    new_players = []
+    for n in range(player_count):
+        player_name = input("Please enter player name: ")
+#       find_name = (next(item for item in imported_standings if item['name'] == str(player_name)), None)
+        find_name = search(player_name, imported_standings)
+        if find_name is not None:
+            relevant_imported_standings.append(find_name)
+            print("%s found in imported standings." % player_name)
+        else:
+            new_players.append(player_name)
+    print("Seeding returning players based on imported standings.")
+# this section has a problem in that it doesn't always add the returning players to the list. it should add them in seed order.
+    i = 1
+    for n in relevant_imported_standings:
+        if int(n['seed']) == i:
+            init_match_list.append(n['name'])
+        i += 1
 
+    print("List of players not in imported standings: " + str(new_players))
+    new_seeds_list = []
+    print("DEBUG: init_match_list: " + str(init_match_list))
+    for n in new_players:
+        curr_lowest = (len(init_match_list))
+        new_seed = int(input("What seed should " + str(n) + " be? Current lowest seed is " + str(curr_lowest) + ". "))
+        new_seeds_list.append({'name': str(n), 'seed': new_seed})
+        curr_lowest += 1
+    i = 1
+    for n in new_seeds_list:
+        if int(n['seed'] == i):
+            init_match_list.append(n['name'])
+        i += 1
+    print("List of players in seeded order: " + str(init_match_list))
 # stats
 stats = []
 for player in init_match_list:
