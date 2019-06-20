@@ -93,11 +93,29 @@ else:
     print("List of players not in imported standings: " + str(new_players))
     print(" ")
     new_seeds_list = []
+    # determining valid seed values remaining
+    valid_seed_inputs = []
+    i = 0
+    while len(valid_seed_inputs) + len(init_match_list) < player_count:
+        valid_seed_inputs.append(player_count - i)
+        i += 1
     for n in new_players:
-        curr_lowest = (len(init_match_list))
-        new_seed = int(input("What seed should " + str(n) + " be? Current lowest seed is " + str(curr_lowest) + ". "))
-        new_seeds_list.append({'name': str(n), 'seed': new_seed})
-        curr_lowest += 1
+        while True:
+            try:
+                new_seed = int(input("What seed should " + str(n) + " be? Valid values: " + str(valid_seed_inputs) + " "))
+                if new_seed in valid_seed_inputs:
+                    new_seeds_list.append({'name': str(n), 'seed': new_seed})
+                    valid_seed_inputs.remove(new_seed)
+                    break
+                else:
+                    print("Invalid input.")
+                    continue
+            except ValueError:
+                print("Invalid input.")
+                continue
+            if len(new_seeds_list) + len(init_match_list) == player_count:
+                break
+
     # search list to assign order
     i = len(init_match_list) + 1
     while i <= player_count:
