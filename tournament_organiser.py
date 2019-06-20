@@ -19,7 +19,7 @@ standing = player_count
 # player_count = 16
 
 init_match_list = []
-
+# prompt to import
 while True:
     import_seeds = input("Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
     if import_seeds.lower() != "y" and import_seeds.lower() != "n":
@@ -28,48 +28,52 @@ while True:
     else:
         break
 
+# search for name in imports
+
 
 def search_name(name, list_of_dicts):
-    miss = 1
+    cycle = 0
     for p in list_of_dicts:
         if p['name'] == name:
             return p
         else:
-            miss += 1
-            if miss == len(list_of_dicts):
+            cycle += 1
+            if cycle == len(list_of_dicts):
                 return None
             else:
                 continue
 
 # maybe could use a decorator here
 
+# search for seed in imports
+
 
 def search_seed(seed, list_of_dicts):
-    miss = 1
+    cycle = 0
     for p in list_of_dicts:
         if p['seed'] == seed:
             return p
         else:
-            miss += 1
-            if miss == len(list_of_dicts):
+            cycle += 1
+            if cycle == len(list_of_dicts):
                 return None
             else:
                 continue
 
 
-# currently seed position is stored in order in the list, no key-value pair
+# if no imports, put players in a normal list
 if import_seeds == "n":
     for n in range(player_count):
         init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+# otherwise import some
 else:
     with open('standings.json', 'r') as imported_standings:
         imported_standings = json.load(imported_standings)
-    # print(imported_standings)
+    # for debugging # print(imported_standings)
     relevant_imported_standings = []
     new_players = []
     for n in range(player_count):
         player_name = input("Please enter player name: ")
-#       find_name = (next(item for item in imported_standings if item['name'] == str(player_name)), None)
         find_name = search_name(player_name, imported_standings)
         if find_name is not None:
             relevant_imported_standings.append(find_name)
@@ -84,16 +88,15 @@ else:
         if find_seed is not None:
             init_match_list.append(find_seed['name'])
         i += 1
-# not all the relevant players are being added to init_match_list at this point - need to fix
+# seed remaining non-imports
     print("List of players not in imported standings: " + str(new_players))
     new_seeds_list = []
-    print("DEBUG: init_match_list: " + str(init_match_list))
     for n in new_players:
         curr_lowest = (len(init_match_list))
         new_seed = int(input("What seed should " + str(n) + " be? Current lowest seed is " + str(curr_lowest) + ". "))
         new_seeds_list.append({'name': str(n), 'seed': new_seed})
         curr_lowest += 1
-    i = 1
+    i = len(init_match_list) + 1
     for n in new_seeds_list:
         if int(n['seed'] == i):
             init_match_list.append(n['name'])
@@ -122,7 +125,7 @@ rem_match_count = (player_count - 1) * 2 + 1
 losers_match_list = []
 winners_match_list = []
 
-# function definitions
+# result query function definition
 winner = ""
 loser = ""
 
