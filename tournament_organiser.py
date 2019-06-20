@@ -27,7 +27,7 @@ while True:
         continue
     else:
         break
-
+print(" ")
 # search for name in imports
 
 
@@ -78,6 +78,7 @@ else:
         if find_name is not None:
             relevant_imported_standings.append(find_name)
             print("%s found in imported standings." % player_name)
+            print(" ")
         else:
             new_players.append(player_name)
     print("Seeding returning players based on imported standings.")
@@ -90,17 +91,20 @@ else:
         i += 1
 # seed remaining non-imports
     print("List of players not in imported standings: " + str(new_players))
+    print(" ")
     new_seeds_list = []
     for n in new_players:
         curr_lowest = (len(init_match_list))
         new_seed = int(input("What seed should " + str(n) + " be? Current lowest seed is " + str(curr_lowest) + ". "))
         new_seeds_list.append({'name': str(n), 'seed': new_seed})
         curr_lowest += 1
+    # search list to assign order - working on this section
     i = len(init_match_list) + 1
     for n in new_seeds_list:
-        if int(n['seed'] == i):
-            init_match_list.append(n['name'])
+        find_seed = search_seed(i, new_seeds_list)
+        init_match_list.append(find_seed['name'])
         i += 1
+
     print("List of players in seeded order: " + str(init_match_list))
 # stats
 stats = []
