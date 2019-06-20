@@ -98,9 +98,9 @@ else:
         new_seed = int(input("What seed should " + str(n) + " be? Current lowest seed is " + str(curr_lowest) + ". "))
         new_seeds_list.append({'name': str(n), 'seed': new_seed})
         curr_lowest += 1
-    # search list to assign order - working on this section
+    # search list to assign order
     i = len(init_match_list) + 1
-    for n in new_seeds_list:
+    while i <= player_count:
         find_seed = search_seed(i, new_seeds_list)
         init_match_list.append(find_seed['name'])
         i += 1
