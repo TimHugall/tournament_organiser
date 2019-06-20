@@ -2,6 +2,7 @@
 # module imports
 import numpy as np
 import pandas as pd
+import json
 
 # player count
 player_count = -1
@@ -214,3 +215,6 @@ standings_list = sorted(stats, key=lambda k: k['standing'])
 standings_df = pd.DataFrame(standings_list)
 # print results without index, columns ordered correctly
 print(standings_df[['standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
+
+with open('standings.json', 'w') as json_output:
+    json.dump(standings_list, json_output)
