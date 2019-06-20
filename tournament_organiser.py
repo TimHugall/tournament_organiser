@@ -29,10 +29,25 @@ while True:
         break
 
 
-def search(name, list_of_dicts):
+def search_name(name, list_of_dicts):
     miss = 1
     for p in list_of_dicts:
         if p['name'] == name:
+            return p
+        else:
+            miss += 1
+            if miss == len(list_of_dicts):
+                return None
+            else:
+                continue
+
+# maybe could use a decorator here
+
+
+def search_seed(seed, list_of_dicts):
+    miss = 1
+    for p in list_of_dicts:
+        if p['seed'] == seed:
             return p
         else:
             miss += 1
@@ -55,20 +70,21 @@ else:
     for n in range(player_count):
         player_name = input("Please enter player name: ")
 #       find_name = (next(item for item in imported_standings if item['name'] == str(player_name)), None)
-        find_name = search(player_name, imported_standings)
+        find_name = search_name(player_name, imported_standings)
         if find_name is not None:
             relevant_imported_standings.append(find_name)
             print("%s found in imported standings." % player_name)
         else:
             new_players.append(player_name)
     print("Seeding returning players based on imported standings.")
-# this section has a problem in that it doesn't always add the returning players to the list. it should add them in seed order.
-    i = 1
-    for n in relevant_imported_standings:
-        if int(n['seed']) == i:
-            init_match_list.append(n['name'])
-        i += 1
 
+    i = 1
+    while i <= len(imported_standings):
+        find_seed = search_seed(i, relevant_imported_standings)
+        if find_seed is not None:
+            init_match_list.append(find_seed['name'])
+        i += 1
+# not all the relevant players are being added to init_match_list at this point - need to fix
     print("List of players not in imported standings: " + str(new_players))
     new_seeds_list = []
     print("DEBUG: init_match_list: " + str(init_match_list))
