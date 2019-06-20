@@ -20,9 +20,22 @@ standing = player_count
 
 init_match_list = []
 
+while True:
+    import_seeds = input("Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
+    if import_seeds.lower() != "y" and import_seeds.lower() != "n":
+        print("Invalid input.")
+        continue
+    else:
+        break
+
+
 # currently seed position is stored in order in the list, no key-value pair
-for n in range(player_count):
-    init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+if import_seeds == "n":
+    for n in range(player_count):
+        init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+else:
+    with open('standings.json', 'r') as imported_standings:
+        print(imported_standings)
 
 # stats
 stats = []
