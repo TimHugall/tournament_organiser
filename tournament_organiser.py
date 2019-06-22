@@ -15,10 +15,8 @@ while player_count < 1 or player_count == 1:
 
 standing = player_count
 
-# for debugging
-# player_count = 16
-
 init_match_list = []
+
 # prompt to import
 while True:
     import_seeds = input("Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
@@ -28,30 +26,13 @@ while True:
     else:
         break
 print(" ")
-# search for name in imports
 
 
-def search_name(name, list_of_dicts):
+# define function to search lists of dictionaries
+def search_lod(key, value, list_of_dicts):
     cycle = 0
     for p in list_of_dicts:
-        if p['name'] == name:
-            return p
-        else:
-            cycle += 1
-            if cycle == len(list_of_dicts):
-                return None
-            else:
-                continue
-
-# maybe could use a decorator here
-
-# search for seed in imports
-
-
-def search_seed(seed, list_of_dicts):
-    cycle = 0
-    for p in list_of_dicts:
-        if p['seed'] == seed:
+        if p[key] == value:
             return p
         else:
             cycle += 1
@@ -69,12 +50,12 @@ if import_seeds == "n":
 else:
     with open('standings.json', 'r') as imported_standings:
         imported_standings = json.load(imported_standings)
-    # for debugging # print(imported_standings)
     relevant_imported_standings = []
     new_players = []
+    # check if some players are in imported standings
     for n in range(player_count):
         player_name = input("Please enter player name: ")
-        find_name = search_name(player_name, imported_standings)
+        find_name = search_lod('name', player_name, imported_standings)
         if find_name is not None:
             relevant_imported_standings.append(find_name)
             print("%s found in imported standings." % player_name)
@@ -82,10 +63,10 @@ else:
         else:
             new_players.append(player_name)
     print("Seeding returning players based on imported standings.")
-
+# add found players to init_match_list
     i = 1
     while i <= len(imported_standings):
-        find_seed = search_seed(i, relevant_imported_standings)
+        find_seed = search_lod('seed', i, relevant_imported_standings)
         if find_seed is not None:
             init_match_list.append(find_seed['name'])
         i += 1
@@ -99,6 +80,7 @@ else:
     while len(valid_seed_inputs) + len(init_match_list) < player_count:
         valid_seed_inputs.append(player_count - i)
         i += 1
+    # prompt for seeding for new players
     for n in new_players:
         while True:
             try:
@@ -116,14 +98,15 @@ else:
             if len(new_seeds_list) + len(init_match_list) == player_count:
                 break
 
-    # search list to assign order
+    # search list to assign order and append to init_match_list
     i = len(init_match_list) + 1
     while i <= player_count:
-        find_seed = search_seed(i, new_seeds_list)
+        find_seed = search_lod('seed', i, new_seeds_list)
         init_match_list.append(find_seed['name'])
         i += 1
 
     print("List of players in seeded order: " + str(init_match_list))
+
 # stats
 stats = []
 for player in init_match_list:
@@ -135,21 +118,19 @@ for player in init_match_list:
     player_stats["losses"] = 0
     stats.append(player_stats)
 
-# for debugging - now testing 16 players
-# init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-
-# needs better formatting
+# could format better
 print("Players: " + str(init_match_list))
 
 # formula for double elim
 rem_match_count = (player_count - 1) * 2 + 1
-# establish lists for use below
+# establish lists, variables for use below
 losers_match_list = []
 winners_match_list = []
 
-# result query function definition
 winner = ""
 loser = ""
+
+# define function to ask user who won
 
 
 def resultQuery(player_one, player_two):
@@ -242,12 +223,12 @@ print("Losers' bracket: " + str(losers_match_list))
 # winners and losers repeating matches
 while rem_match_count > 2:
     # losers until GF
-    print(" ")
-    print("Losers' round")
     s = 0
     keep_in_losers = []
     eliminated = []
     while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0:
+        print(" ")
+        print("Losers' round")
         resultQuery(losers_match_list[s], losers_match_list[s+1])
         # add loser to eliminated
         eliminated.append(loser)
@@ -269,14 +250,14 @@ while rem_match_count > 2:
     print("Losers' bracket: " + str(losers_match_list))
 
     # winners until GF
-    print(" ")
-    print("Winners' round")
     s = 0
     move_to_losers = []
     # added condition that winners_match_list is greater than losers_match_list
     # otherwise larger player counts losers get inserted incorrectly into losers_match_list
     # must be an exception for when both lists have length 2, however
     if len(winners_match_list) != 1 and (len(winners_match_list) > len(losers_match_list) or len(winners_match_list) == 2):
+        print(" ")
+        print("Winners' round")
         keep_in_winners = []
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             resultQuery(winners_match_list[s], winners_match_list[s+1])
@@ -297,9 +278,9 @@ while rem_match_count > 2:
                 losers_match_list.insert(s, n)
                 s += 2
 
-    print(" ")
-    print("Winners' bracket: " + str(winners_match_list))
-    print("Losers' bracket: " + str(losers_match_list))
+        print(" ")
+        print("Winners' bracket: " + str(winners_match_list))
+        print("Losers' bracket: " + str(losers_match_list))
 
 # grand final
 print(" ")
