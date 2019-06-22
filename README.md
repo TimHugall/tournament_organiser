@@ -10,4 +10,4 @@ Run tournament.py from CLI
 * Improving functions
 * Better presentation of printed information (diagrams, dataframes)
 * Better stats functionality
-* Cleanup (use dictionaries more)
+* Cleanup
