@@ -2,6 +2,7 @@
 # module imports
 import numpy as np
 import pandas as pd
+import json
 
 # player count
 player_count = -1
@@ -14,14 +15,97 @@ while player_count < 1 or player_count == 1:
 
 standing = player_count
 
-# for debugging
-# player_count = 16
-
 init_match_list = []
 
-# currently seed position is stored in order in the list, no key-value pair
-for n in range(player_count):
-    init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+# prompt to import
+while True:
+    import_seeds = input("Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
+    if import_seeds.lower() != "y" and import_seeds.lower() != "n":
+        print("Invalid input.")
+        continue
+    else:
+        break
+print(" ")
+
+
+# define function to search lists of dictionaries
+def search_lod(key, value, list_of_dicts):
+    cycle = 0
+    for p in list_of_dicts:
+        if p[key] == value:
+            return p
+        else:
+            cycle += 1
+            if cycle == len(list_of_dicts):
+                return None
+            else:
+                continue
+
+
+# if no imports, put players in a normal list
+if import_seeds == "n":
+    for n in range(player_count):
+        init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+# otherwise import some
+else:
+    with open('standings.json', 'r') as imported_standings:
+        imported_standings = json.load(imported_standings)
+    relevant_imported_standings = []
+    new_players = []
+    # check if some players are in imported standings
+    for n in range(player_count):
+        player_name = input("Please enter player name: ")
+        find_name = search_lod('name', player_name, imported_standings)
+        if find_name is not None:
+            relevant_imported_standings.append(find_name)
+            print("%s found in imported standings." % player_name)
+            print(" ")
+        else:
+            new_players.append(player_name)
+    print("Seeding returning players based on imported standings.")
+# add found players to init_match_list
+    i = 1
+    while i <= len(imported_standings):
+        find_seed = search_lod('seed', i, relevant_imported_standings)
+        if find_seed is not None:
+            init_match_list.append(find_seed['name'])
+        i += 1
+# seed remaining non-imports
+    print("List of players not in imported standings: " + str(new_players))
+    print(" ")
+    new_seeds_list = []
+    # determining valid seed values remaining
+    valid_seed_inputs = []
+    i = 0
+    while len(valid_seed_inputs) + len(init_match_list) < player_count:
+        valid_seed_inputs.append(player_count - i)
+        i += 1
+    # prompt for seeding for new players
+    for n in new_players:
+        while True:
+            try:
+                new_seed = int(input("What seed should " + str(n) + " be? Valid values: " + str(valid_seed_inputs) + " "))
+                if new_seed in valid_seed_inputs:
+                    new_seeds_list.append({'name': str(n), 'seed': new_seed})
+                    valid_seed_inputs.remove(new_seed)
+                    break
+                else:
+                    print("Invalid input.")
+                    continue
+            except ValueError:
+                print("Invalid input.")
+                continue
+            if len(new_seeds_list) + len(init_match_list) == player_count:
+                break
+
+    # search list to assign order and append to init_match_list
+    i = len(init_match_list) + 1
+    while i <= player_count:
+        find_seed = search_lod('seed', i, new_seeds_list)
+        init_match_list.append(find_seed['name'])
+        i += 1
+
+    print("List of players in seeded order: " + str(init_match_list))
 
 # stats
 stats = []
@@ -34,21 +118,19 @@ for player in init_match_list:
     player_stats["losses"] = 0
     stats.append(player_stats)
 
-# for debugging - now testing 16 players
-# init_match_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-
-# needs better formatting
+# could format better
 print("Players: " + str(init_match_list))
 
 # formula for double elim
 rem_match_count = (player_count - 1) * 2 + 1
-# establish lists for use below
+# establish lists, variables for use below
 losers_match_list = []
 winners_match_list = []
 
-# function definitions
 winner = ""
 loser = ""
+
+# define function to ask user who won
 
 
 def resultQuery(player_one, player_two):
@@ -141,12 +223,12 @@ print("Losers' bracket: " + str(losers_match_list))
 # winners and losers repeating matches
 while rem_match_count > 2:
     # losers until GF
-    print(" ")
-    print("Losers' round")
     s = 0
     keep_in_losers = []
     eliminated = []
     while len(losers_match_list) > (len(keep_in_losers) * 2) or len(losers_match_list) % 2 != 0:
+        print(" ")
+        print("Losers' round")
         resultQuery(losers_match_list[s], losers_match_list[s+1])
         # add loser to eliminated
         eliminated.append(loser)
@@ -168,14 +250,14 @@ while rem_match_count > 2:
     print("Losers' bracket: " + str(losers_match_list))
 
     # winners until GF
-    print(" ")
-    print("Winners' round")
     s = 0
     move_to_losers = []
     # added condition that winners_match_list is greater than losers_match_list
     # otherwise larger player counts losers get inserted incorrectly into losers_match_list
     # must be an exception for when both lists have length 2, however
     if len(winners_match_list) != 1 and (len(winners_match_list) > len(losers_match_list) or len(winners_match_list) == 2):
+        print(" ")
+        print("Winners' round")
         keep_in_winners = []
         while len(winners_match_list) > (len(keep_in_winners) * 2) or len(winners_match_list) % 2 != 0:
             resultQuery(winners_match_list[s], winners_match_list[s+1])
@@ -196,9 +278,9 @@ while rem_match_count > 2:
                 losers_match_list.insert(s, n)
                 s += 2
 
-    print(" ")
-    print("Winners' bracket: " + str(winners_match_list))
-    print("Losers' bracket: " + str(losers_match_list))
+        print(" ")
+        print("Winners' bracket: " + str(winners_match_list))
+        print("Losers' bracket: " + str(losers_match_list))
 
 # grand final
 print(" ")
@@ -214,3 +296,6 @@ standings_list = sorted(stats, key=lambda k: k['standing'])
 standings_df = pd.DataFrame(standings_list)
 # print results without index, columns ordered correctly
 print(standings_df[['standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
+
+with open('standings.json', 'w') as json_output:
+    json.dump(standings_list, json_output)
