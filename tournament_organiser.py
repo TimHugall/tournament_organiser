@@ -119,6 +119,7 @@ for player in init_match_list:
     stats.append(player_stats)
 
 # could format better
+print(" ")
 print("Players: " + str(init_match_list))
 
 # formula for double elim
