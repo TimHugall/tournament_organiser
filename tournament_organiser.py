@@ -104,7 +104,7 @@ else:
         find_seed = search_lod('seed', i, new_seeds_list)
         init_match_list.append(find_seed['name'])
         i += 1
-
+    print(" ")
     print("List of players in seeded order: " + str(init_match_list))
 
 # stats
