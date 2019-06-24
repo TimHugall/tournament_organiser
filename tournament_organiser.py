@@ -18,8 +18,7 @@ init_match_list = []
 
 # prompt to import
 while True:
-    import_seeds = input(
-        "Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
+    import_seeds = input( "Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
     if import_seeds.lower() != "y" and import_seeds.lower() != "n":
         print("Invalid input.")
         continue
