@@ -14,19 +14,18 @@ while player_count < 1 or player_count == 1:
         continue
 
 standing = player_count
-
 init_match_list = []
 
 # prompt to import
 while True:
-    import_seeds = input("Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
+    import_seeds = input(
+        "Do you wish to assign some seedings from a previous standings.json file? (y/n) ")
     if import_seeds.lower() != "y" and import_seeds.lower() != "n":
         print("Invalid input.")
         continue
     else:
         break
 print(" ")
-
 
 # define function to search lists of dictionaries
 def search_lod(key, value, list_of_dicts):
@@ -41,17 +40,18 @@ def search_lod(key, value, list_of_dicts):
             else:
                 continue
 
-
 # if no imports, put players in a normal list
 if import_seeds == "n":
     for n in range(player_count):
         init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+
 # otherwise import some
 else:
     with open('standings.json', 'r') as imported_standings:
         imported_standings = json.load(imported_standings)
     relevant_imported_standings = []
     new_players = []
+
     # check if some players are in imported standings
     for n in range(player_count):
         player_name = input("Please enter player name: ")
@@ -63,23 +63,27 @@ else:
         else:
             new_players.append(player_name)
     print("Seeding returning players based on imported standings.")
-# add found players to init_match_list
+
+    # add found players to init_match_list
     i = 1
     while i <= len(imported_standings):
         find_seed = search_lod('seed', i, relevant_imported_standings)
         if find_seed is not None:
             init_match_list.append(find_seed['name'])
         i += 1
-# seed remaining non-imports
+
+    # seed remaining non-imports
     print("List of players not in imported standings: " + str(new_players))
     print(" ")
     new_seeds_list = []
+
     # determining valid seed values remaining
     valid_seed_inputs = []
     i = 0
     while len(valid_seed_inputs) + len(init_match_list) < player_count:
         valid_seed_inputs.append(player_count - i)
         i += 1
+
     # prompt for seeding for new players
     for n in new_players:
         while True:
@@ -124,16 +128,14 @@ print("Players: " + str(init_match_list))
 
 # formula for double elim
 rem_match_count = (player_count - 1) * 2 + 1
+
 # establish lists, variables for use below
 losers_match_list = []
 winners_match_list = []
-
 winner = ""
 loser = ""
 
-# define function to ask user who won
-
-
+# define function to ask user for match result
 def resultQuery(player_one, player_two):
     global winner, loser, rem_match_count, stats, standing
     while True:
@@ -178,6 +180,11 @@ def resultQuery(player_one, player_two):
             else:
                 break
 
+# define function to print brackets
+def print_brackets(winners_match_list, losers_match_list):
+    print(" ")
+    print("Winners' bracket: " + str(winners_match_list))
+    print("Losers' bracket: " + str(losers_match_list))
 
 # reserved section for matches in case of uneven number of players
 if player_count % 2 != 0:
@@ -217,9 +224,7 @@ if uneven == True:
     losers_match_list.remove(loser)
     uneven = False
 
-print(" ")
-print("Winners' bracket: " + str(winners_match_list))
-print("Losers' bracket: " + str(losers_match_list))
+print_brackets(winners_match_list, losers_match_list)
 
 # winners and losers repeating matches
 while rem_match_count > 2:
@@ -246,9 +251,7 @@ while rem_match_count > 2:
         keep_in_losers.append(losers_match_list[-1])
     losers_match_list = keep_in_losers
 
-    print(" ")
-    print("Winners' bracket: " + str(winners_match_list))
-    print("Losers' bracket: " + str(losers_match_list))
+    print_brackets(winners_match_list, losers_match_list)
 
     # winners until GF
     s = 0
@@ -279,9 +282,7 @@ while rem_match_count > 2:
                 losers_match_list.insert(s, n)
                 s += 2
 
-        print(" ")
-        print("Winners' bracket: " + str(winners_match_list))
-        print("Losers' bracket: " + str(losers_match_list))
+        print_brackets(winners_match_list, losers_match_list)
 
 # grand final
 print(" ")
