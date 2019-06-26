@@ -27,6 +27,7 @@ while True:
 print(" ")
 
 # define function to search lists of dictionaries
+# could implement binary search although sorting it in the first place is probably not worth it
 def search_lod(key, value, list_of_dicts):
     cycle = 0
     for p in list_of_dicts:
