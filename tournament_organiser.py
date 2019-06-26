@@ -14,7 +14,6 @@ while player_count < 1 or player_count == 1:
         continue
 
 standing = player_count
-init_match_list = []
 
 # prompt to import
 while True:
@@ -41,10 +40,12 @@ def search_lod(key, value, list_of_dicts):
                 continue
 
 # if no imports, put players in a normal list
+# the following 3 commented-out sections were replaced by the list comprehension
+# init_match_list = []
 if import_seeds == "n":
-    for n in range(player_count):
-        init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
-
+#    for n in range(player_count):
+#        init_match_list.append(input("Please enter seed %d name: " % (n + 1)))
+    init_match_list = [(input("Please enter seed %d name: " % (n + 1))) for n in range(player_count)]
 # otherwise import some
 else:
     with open('standings.json', 'r') as imported_standings:
@@ -295,7 +296,7 @@ print(" ")
 print("Results: ")
 # prints standings at end
 standings_list = sorted(stats, key=lambda k: k['standing']) # python lambda function. key is passed as 2nd parameter to sorted(),
-# which is a function itself, taking argument k (key in dict) and returning value for 'standing' in that key in dict. 
+# which is a function itself, taking argument k (key in dict) and returning value for 'standing' in that key in dict.
 standings_df = pd.DataFrame(standings_list)
 # print results without index, columns ordered correctly
 print(standings_df[['standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
