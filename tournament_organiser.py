@@ -294,7 +294,8 @@ print(str(winner) + " is the winner!")
 print(" ")
 print("Results: ")
 # prints standings at end
-standings_list = sorted(stats, key=lambda k: k['standing']) # python lambda function
+standings_list = sorted(stats, key=lambda k: k['standing']) # python lambda function. key is passed as 2nd parameter to sorted(),
+# which is a function itself, taking argument k (key in dict) and returning value for 'standing' in that key in dict. 
 standings_df = pd.DataFrame(standings_list)
 # print results without index, columns ordered correctly
 print(standings_df[['standing', 'name', 'wins', 'losses', 'seed']].to_string(index=False))
